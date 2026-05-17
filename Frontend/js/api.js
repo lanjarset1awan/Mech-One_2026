@@ -1,5 +1,5 @@
 const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-const BASE_URL = isLocal ? "http://localhost:5000" : "https://mech-one-2026.vercel.app"; // Ganti dengan URL Vercel backend Anda nanti
+const BASE_URL = isLocal ? "http://localhost:5000" : "https://mech-one-2026.vercel.app";
 
 async function register(data) {
     const res = await fetch(`${BASE_URL}/auth/register`, {
