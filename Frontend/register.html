@@ -17,26 +17,26 @@
 
     <!-- Navbar -->
     <nav class="w-full z-50 bg-[#0a1d37]/40 backdrop-blur-md border-b border-white/10 absolute top-0">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-            <div class="text-2xl font-black tracking-tighter">
-                <a href="index.html">MECH<span class="text-[#ffcc00]">-ONE</span> <span class="font-light">2026</span></a>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-5 flex justify-between items-center">
+            <div class="text-xl md:text-2xl font-black tracking-tighter shrink-0">
+                <a href="index.html">MECH<span class="text-[#ffcc00]">-ONE</span> <span class="font-light hidden sm:inline">2026</span></a>
             </div>
             
-            <div class="flex items-center space-x-4">
-                <a href="login.html" class="text-xs font-bold uppercase tracking-widest hover:text-[#ffcc00] transition-colors">Login</a>
+            <div class="flex items-center space-x-4 shrink-0">
+                <a href="login.html" class="text-[10px] md:text-xs font-bold uppercase tracking-widest hover:text-[#ffcc00] transition-colors">Login</a>
             </div>
         </div>
     </nav>
 
     <!-- Register Section -->
-    <section class="flex-grow flex items-center justify-center px-6 pt-24 pb-12">
-        <div class="glass-card p-10 md:p-14 rounded-3xl w-full max-w-md relative overflow-hidden shadow-2xl">
+    <section class="flex-grow flex items-center justify-center px-4 md:px-6 pt-24 pb-12">
+        <div class="glass-card p-8 md:p-14 rounded-3xl w-full max-w-md relative overflow-hidden shadow-2xl">
             <!-- Decorative Icon -->
             <div class="absolute top-0 right-0 p-6 opacity-10">
-                <i class="fas fa-user-plus text-7xl text-[#ffcc00]"></i>
+                <i class="fas fa-user-plus text-6xl md:text-7xl text-[#ffcc00]"></i>
             </div>
             
-            <h2 class="text-3xl font-black mb-2 uppercase tracking-tight relative z-10">Create Account</h2>
+            <h2 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight relative z-10">Create Account</h2>
             <p class="text-slate-400 text-sm mb-8 relative z-10">Join the Mech-ONE 2026 community.</p>
 
             <form id="registerForm" class="space-y-5 relative z-10">
@@ -55,7 +55,7 @@
                     <input id="password" type="password" placeholder="••••••••" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
                 </div>
 
-                <button type="submit" id="registerBtn" class="w-full mt-4 px-6 py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-bold rounded-sm transition-colors uppercase text-sm tracking-widest shadow-lg shadow-yellow-900/30">
+                <button type="submit" id="registerBtn" class="w-full mt-4 px-6 py-3 md:py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-bold rounded-sm transition-colors uppercase text-sm tracking-widest shadow-lg shadow-yellow-900/30">
                     Register Now
                 </button>
             </form>
