@@ -38,35 +38,55 @@ export const uploadProfileDocs = async (req, res) => {
     const userId = req.user.id;
     const files = req.files;
 
-    const uploadFile = async (file, name) => {
-        const { data, error } = await supabase.storage
-            .from("users")
-            .upload(`${userId}/${name}`, file.buffer, {
-                contentType: file.mimetype,
-                upsert: true,
-            });
-
-        if (error) throw error;
-        
-        // Get public URL
-        const { data: publicUrlData } = supabase.storage
-            .from("users")
-            .getPublicUrl(`${userId}/${name}`);
-            
-        return publicUrlData.publicUrl;
-    };
-
     try {
+        // Fetch current user to find old file URLs
+        const { data: user, error: userError } = await supabase
+            .from("users")
+            .select("*")
+            .eq("id", userId)
+            .single();
+
+        if (userError) throw userError;
+
+        const uploadFile = async (file, dbColumn, fileExt) => {
+            // Delete old file if exists
+            const oldUrl = user[dbColumn];
+            if (oldUrl) {
+                const urlParts = oldUrl.split('/public/users/');
+                if (urlParts.length > 1) {
+                    const oldPath = urlParts[1];
+                    await supabase.storage.from("users").remove([oldPath]);
+                }
+            }
+
+            // Generate unique filename to bypass browser cache
+            const uniqueName = `${dbColumn}_${Date.now()}.${fileExt}`;
+            const filePath = `${userId}/${uniqueName}`;
+
+            const { data, error } = await supabase.storage
+                .from("users")
+                .upload(filePath, file.buffer, {
+                    contentType: file.mimetype,
+                    upsert: true,
+                });
+
+            if (error) throw error;
+            
+            // Get public URL
+            const { data: publicUrlData } = supabase.storage
+                .from("users")
+                .getPublicUrl(filePath);
+                
+            return publicUrlData.publicUrl;
+        };
+
         const result = {};
         const updatesToDb = {};
 
         for (const file of files) {
-            // Map the fieldname from the frontend to the DB column name
-            // Assuming frontend fieldnames match the DB columns minus the _url part, or exactly match it.
-            // Let's assume frontend sends exactly the column name (e.g., student_card_url).
             const dbColumn = file.fieldname;
             const fileExt = file.mimetype.split('/')[1] || 'jpg';
-            const publicUrl = await uploadFile(file, `${dbColumn}.${fileExt}`);
+            const publicUrl = await uploadFile(file, dbColumn, fileExt);
             
             result[dbColumn] = publicUrl;
             updatesToDb[dbColumn] = publicUrl;

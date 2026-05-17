@@ -177,16 +177,23 @@
                     const div = document.createElement('div');
                     div.className = 'doc-item';
                     
+                    const uploadInputHtml = `
+                        <label for="${doc.id}" class="file-label px-5 py-2 md:py-2 bg-[#00a8e8]/20 hover:bg-[#00a8e8]/40 text-[#00a8e8] text-xs font-bold uppercase tracking-widest rounded-sm transition-colors flex items-center justify-center gap-2 border border-[#00a8e8]/50 w-full md:w-auto mt-2 md:mt-0 cursor-pointer">
+                            <i class="fas fa-upload"></i> <span id="label-${doc.id}">${url ? 'Change File' : 'Select File'}</span>
+                        </label>
+                        <input type="file" id="${doc.id}" accept="image/*,.pdf" onchange="handleFileSelect('${doc.id}')" class="hidden" />
+                    `;
+
                     let actionHtml = '';
                     if (url) {
-                        actionHtml = `<a href="${url}" target="_blank" class="px-5 py-2 md:py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-widest rounded-sm transition-colors flex items-center justify-center gap-2 border border-white/20 w-full md:w-auto mt-2 md:mt-0"><i class="fas fa-eye"></i> View file</a>`;
-                    } else {
                         actionHtml = `
-                            <label for="${doc.id}" class="file-label px-5 py-2 md:py-2 bg-[#00a8e8]/20 hover:bg-[#00a8e8]/40 text-[#00a8e8] text-xs font-bold uppercase tracking-widest rounded-sm transition-colors flex items-center justify-center gap-2 border border-[#00a8e8]/50 w-full md:w-auto mt-2 md:mt-0">
-                                <i class="fas fa-upload"></i> <span id="label-${doc.id}">Select File</span>
-                            </label>
-                            <input type="file" id="${doc.id}" accept="image/*,.pdf" onchange="handleFileSelect('${doc.id}')" />
+                            <div class="flex flex-col md:flex-row gap-2 w-full">
+                                <a href="${url}" target="_blank" class="px-5 py-2 md:py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-widest rounded-sm transition-colors flex items-center justify-center gap-2 border border-white/20 w-full md:w-auto mt-2 md:mt-0"><i class="fas fa-eye"></i> View</a>
+                                ${uploadInputHtml}
+                            </div>
                         `;
+                    } else {
+                        actionHtml = uploadInputHtml;
                     }
 
                     div.innerHTML = `
