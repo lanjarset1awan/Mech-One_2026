@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Mech-ONE 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat:wght@700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/register.css">
+</head>
+
+<body class="antialiased">
+
+    <!-- Navbar -->
+    <nav class="w-full z-50 bg-[#0a1d37]/40 backdrop-blur-md border-b border-white/10 absolute top-0">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="text-2xl font-black tracking-tighter">
+                <a href="index.html">MECH<span class="text-[#ffcc00]">-ONE</span> <span class="font-light">2026</span></a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <a href="login.html" class="text-xs font-bold uppercase tracking-widest hover:text-[#ffcc00] transition-colors">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <section class="flex-grow flex items-center justify-center px-6 pt-24 pb-12">
+        <div class="glass-card p-10 md:p-14 rounded-3xl w-full max-w-md relative overflow-hidden shadow-2xl">
+            <!-- Decorative Icon -->
+            <div class="absolute top-0 right-0 p-6 opacity-10">
+                <i class="fas fa-user-plus text-7xl text-[#ffcc00]"></i>
+            </div>
+            
+            <h2 class="text-3xl font-black mb-2 uppercase tracking-tight relative z-10">Create Account</h2>
+            <p class="text-slate-400 text-sm mb-8 relative z-10">Join the Mech-ONE 2026 community.</p>
+
+            <form id="registerForm" class="space-y-5 relative z-10">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Full Name</label>
+                    <input id="full_name" type="text" placeholder="John Doe" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Email Address</label>
+                    <input id="email" type="email" placeholder="you@example.com" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Password</label>
+                    <input id="password" type="password" placeholder="••••••••" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
+                </div>
+
+                <button type="submit" id="registerBtn" class="w-full mt-4 px-6 py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-bold rounded-sm transition-colors uppercase text-sm tracking-widest shadow-lg shadow-yellow-900/30">
+                    Register Now
+                </button>
+            </form>
+            
+            <div class="mt-8 text-center relative z-10">
+                <p class="text-sm text-gray-400">Already have an account? <a href="login.html" class="text-[#00a8e8] font-bold hover:underline">Login here</a></p>
+            </div>
+        </div>
+    </section>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/popup.js"></script>
+    <script>
+        document.getElementById("registerForm").onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("registerBtn");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            try {
+                const full_name = document.getElementById("full_name").value;
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+
+                if (!full_name || !email || !password) {
+                    await showPopup("Harap isi semua field.");
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    return;
+                }
+
+                const res = await register({ full_name, email, password });
+                
+                if(res.error) {
+                     await showPopup("Registrasi gagal: " + res.error);
+                     btn.innerHTML = originalText;
+                     btn.disabled = false;
+                } else {
+                     await showPopup("Register sukses, silakan login", false);
+                     window.location.href = "login.html";
+                }
+            } catch (error) {
+                await showPopup("Terjadi kesalahan sistem.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

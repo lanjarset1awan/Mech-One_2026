@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Competition - Mech-ONE 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat:wght@700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/register-competition.css">
+</head>
+
+<body class="antialiased">
+
+    <!-- Navbar -->
+    <nav class="w-full z-50 bg-[#0a1d37]/40 backdrop-blur-md border-b border-white/10 absolute top-0">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="text-2xl font-black tracking-tighter">
+                <a href="index.html">MECH<span class="text-[#ffcc00]">-ONE</span> <span class="font-light">2026</span></a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <a href="profile.html" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-widest rounded-sm transition-colors border border-white/20 hidden md:block">Profile</a>
+                <button onclick="logout()" class="px-5 py-2.5 bg-[#800000] hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest rounded-sm transition-colors border border-white/20">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Form Section -->
+    <section class="flex-grow flex items-center justify-center px-6 pt-24 pb-12">
+        <div class="glass-card p-8 md:p-12 rounded-3xl w-full max-w-4xl relative overflow-hidden shadow-2xl">
+            <!-- Decorative Icon -->
+            <div class="absolute top-0 right-0 p-6 opacity-10">
+                <i class="fas fa-trophy text-7xl text-[#ffcc00]"></i>
+            </div>
+            
+            <h2 class="text-3xl font-black mb-2 uppercase tracking-tight relative z-10">Team Registration</h2>
+            <p class="text-slate-400 text-sm mb-8 relative z-10">Register your team for <span id="comp-name" class="text-[#ffcc00] font-bold">...</span></p>
+
+            <div class="grid md:grid-cols-2 gap-10 relative z-10">
+                
+                <!-- Left Column: General Info & Proposal -->
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold border-b border-white/10 pb-2 mb-4 uppercase tracking-widest text-[#00a8e8]">General Info</h3>
+                    
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Team Name</label>
+                        <input id="team" type="text" placeholder="e.g. Innovators" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">University / Institution</label>
+                        <input id="univ" type="text" placeholder="e.g. Diponegoro University" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
+                    </div>
+
+                    <div class="mt-8">
+                        <h3 class="text-xl font-bold border-b border-white/10 pb-2 mb-4 uppercase tracking-widest text-[#00a8e8]">Proposal Document</h3>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Upload PDF</label>
+                        <label class="file-upload-label h-24 flex-col text-center" for="pdf">
+                            <i class="fas fa-file-pdf text-2xl text-red-400 mb-2"></i>
+                            <span id="pdf-name" class="text-xs text-gray-300">Click to upload (.pdf)</span>
+                        </label>
+                        <input id="pdf" type="file" accept="application/pdf" onchange="updateFileName('pdf', 'pdf-name')" />
+                    </div>
+                </div>
+
+                <!-- Right Column: Members -->
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold border-b border-white/10 pb-2 mb-4 uppercase tracking-widest text-[#00a8e8]">Team Members</h3>
+                    
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Leader / Member 1</label>
+                        <input id="m1" type="text" placeholder="Full Name" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Member 2</label>
+                        <input id="m2" type="text" placeholder="Full Name (Optional)" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Member 3</label>
+                        <input id="m3" type="text" placeholder="Full Name (Optional)" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Member 4</label>
+                        <input id="m4" type="text" placeholder="Full Name (Optional)" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Member 5</label>
+                        <input id="m5" type="text" placeholder="Full Name (Optional)" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 border-t border-white/10 pt-8 relative z-10 flex justify-end">
+                <button id="submit" class="w-full md:w-auto px-10 py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-black rounded-sm transition-transform hover:scale-105 uppercase text-sm tracking-widest shadow-lg shadow-yellow-900/30">
+                    Submit Registration
+                </button>
+            </div>
+            
+        </div>
+    </section>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/popup.js"></script>
+    <script>
+        const token = localStorage.getItem("token");
+        if (!token) window.location.href = "login.html";
+
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = "index.html";
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let compType = urlParams.get('type') || 'MDC';
+        document.getElementById("comp-name").innerText = compType === 'MDC' ? 'Mechanical Design (MDC)' : 'Business Plan (BPC)';
+
+        // Validate Profile before allowing registration
+        async function validateProfile() {
+            try {
+                // Check if already registered first
+                const regStatus = await getRegistrationStatus(token);
+                if (regStatus && regStatus.registered) {
+                    await showPopup("⚠️ Akses Ditolak!\n\nAnda sudah terdaftar di kompetisi " + regStatus.type + ". Tidak bisa mendaftar lagi.");
+                    window.location.href = "index.html";
+                    return;
+                }
+
+                const user = await getProfile(token);
+                if (user.error) throw new Error();
+                
+                const requiredFields = ['major', 'gender', 'batch', 'whatsapp_number', 'student_card_url', 'instagram_story_url', 'twibbon_url', 'instagram_follow_url', 'linkedin_follow_url', 'tiktok_follow_url', 'repost_instagram_url'];
+                
+                let isComplete = true;
+                for (const field of requiredFields) {
+                    if (!user[field]) {
+                        isComplete = false;
+                        break;
+                    }
+                }
+
+                if (!isComplete) {
+                    await showPopup("⚠️ Access Denied!\n\nYou must complete your profile and upload ALL required documents before registering for a competition.");
+                    window.location.href = "profile.html";
+                }
+            } catch (err) {
+                await showPopup("Failed to verify profile status.");
+                window.location.href = "profile.html";
+            }
+        }
+        
+        validateProfile();
+
+        function updateFileName(inputId, displayId) {
+            const input = document.getElementById(inputId);
+            const display = document.getElementById(displayId);
+            if (input.files && input.files.length > 0) {
+                display.innerText = input.files[0].name;
+                display.classList.add("text-white");
+                display.classList.remove("text-gray-300");
+            } else {
+                display.innerText = "Click to upload (.pdf)";
+                display.classList.remove("text-white");
+                display.classList.add("text-gray-300");
+            }
+        }
+    </script>
+
+    <script>
+
+        document.getElementById("submit").onclick = async () => {
+            const btn = document.getElementById("submit");
+            const originalText = btn.innerHTML;
+
+            const team = document.getElementById("team").value;
+            const univ = document.getElementById("univ").value;
+            const m1 = document.getElementById("m1").value;
+            const pdfFile = document.getElementById("pdf").files[0];
+
+            if (!team || !univ || !m1 || !pdfFile) {
+                await showPopup("Please fill in the Team Name, University, Leader Name, and upload a Proposal Document.");
+                return;
+            }
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append("team_name", team);
+                formData.append("university", univ);
+                
+                // Set the competition type dynamically based on URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                let currentCompType = urlParams.get('type') || 'MDC';
+                formData.append("competition_type", currentCompType);
+
+                formData.append("member_1", m1);
+                formData.append("member_2", document.getElementById("m2").value);
+                formData.append("member_3", document.getElementById("m3").value);
+                formData.append("member_4", document.getElementById("m4").value);
+                formData.append("member_5", document.getElementById("m5").value);
+
+                formData.append("file", pdfFile);
+
+                const res = await registerCompetition(formData, token);
+                
+                if (res.error) {
+                    await showPopup("Registrasi gagal: " + res.error);
+                } else {
+                    await showPopup("Registrasi sukses", false);
+                    window.location.href = "index.html"; // Redirect to home after success
+                }
+            } catch (err) {
+                await showPopup("Terjadi kesalahan sistem saat registrasi kompetisi: " + err.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

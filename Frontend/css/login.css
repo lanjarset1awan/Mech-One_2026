@@ -1,0 +1,46 @@
+:root {
+    --navy: #0a1d37;
+    --maroon: #800000;
+    --gold: #ffcc00;
+    --light-blue: #00a8e8;
+}
+
+html {
+    overscroll-behavior: none;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0a1d37 0%, #2d0d1e 50%, #800000 100%);
+    background-attachment: fixed;
+    color: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overscroll-behavior: none;
+}
+
+h1, h2, h3, .font-heading {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.input-field {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--light-blue);
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 10px rgba(0, 168, 232, 0.2);
+}
