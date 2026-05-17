@@ -30,6 +30,11 @@ export const registerCompetition = async (req, res) => {
         if (!file) {
             return res.status(400).json({ error: "No file uploaded" });
         }
+        
+        // TODO: Saat ini limit 10 MB. Ubah ke 5 MB nanti jika diperlukan (5 * 1024 * 1024)
+        if (file.size > 10 * 1024 * 1024) {
+            return res.status(400).json({ error: "Ukuran file proposal maksimal 10 MB!" });
+        }
 
         const { data: upload, error } = await supabase.storage
             .from("registrations")

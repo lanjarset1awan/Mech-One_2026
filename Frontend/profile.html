@@ -211,11 +211,17 @@
             }
         }
 
-        window.handleFileSelect = function(docId) {
+        window.handleFileSelect = async function(docId) {
             const input = document.getElementById(docId);
             const labelSpan = document.getElementById(`label-${docId}`);
             if(input.files.length > 0) {
                 const file = input.files[0];
+                
+                if (file.size > 300 * 1024) {
+                    await showPopup("Ukuran file maksimal 300 KB!");
+                    input.value = "";
+                    return;
+                }
                 labelSpan.innerText = file.name.substring(0, 15) + '...';
                 labelSpan.parentElement.classList.replace('bg-[#00a8e8]/20', 'bg-green-500/20');
                 labelSpan.parentElement.classList.replace('text-[#00a8e8]', 'text-green-400');

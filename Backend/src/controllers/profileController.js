@@ -84,6 +84,10 @@ export const uploadProfileDocs = async (req, res) => {
         const updatesToDb = {};
 
         for (const file of files) {
+            if (file.size > 300 * 1024) {
+                throw new Error(`Ukuran file maksimal 300 KB! File terlalu besar.`);
+            }
+            
             const dbColumn = file.fieldname;
             const fileExt = file.mimetype.split('/')[1] || 'jpg';
             const publicUrl = await uploadFile(file, dbColumn, fileExt);

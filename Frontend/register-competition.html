@@ -154,11 +154,24 @@
         
         validateProfile();
 
-        function updateFileName(inputId, displayId) {
+        async function updateFileName(inputId, displayId) {
             const input = document.getElementById(inputId);
             const display = document.getElementById(displayId);
             if (input.files && input.files.length > 0) {
-                display.innerText = input.files[0].name;
+                const file = input.files[0];
+                
+                // TODO: Saat ini limit 10 MB. Ubah ke 5 MB nanti jika diperlukan (5 * 1024 * 1024)
+                const MAX_SIZE = 10 * 1024 * 1024;
+                if (file.size > MAX_SIZE) {
+                    await showPopup("Ukuran file maksimal 10 MB!");
+                    input.value = "";
+                    display.innerText = "Click to upload (.pdf)";
+                    display.classList.remove("text-white");
+                    display.classList.add("text-gray-300");
+                    return;
+                }
+
+                display.innerText = file.name;
                 display.classList.add("text-white");
                 display.classList.remove("text-gray-300");
             } else {
