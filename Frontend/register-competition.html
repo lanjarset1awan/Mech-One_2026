@@ -40,14 +40,14 @@
             <h2 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight relative z-10">Team Registration</h2>
             <p class="text-slate-400 text-sm mb-8 relative z-10">Register your team for <span id="comp-name" class="text-[#ffcc00] font-bold">...</span></p>
 
-            <div class="grid md:grid-cols-2 gap-10 relative z-10">
+            <div id="form-grid" class="grid md:grid-cols-2 gap-10 relative z-10">
                 
                 <!-- Left Column: General Info & Proposal -->
-                <div class="space-y-6">
-                    <h3 class="text-xl font-bold border-b border-white/10 pb-2 mb-4 uppercase tracking-widest text-[#00a8e8]">General Info</h3>
+                <div id="left-column" class="space-y-6">
+                    <h3 id="left-heading" class="text-xl font-bold border-b border-white/10 pb-2 mb-4 uppercase tracking-widest text-[#00a8e8]">General Info</h3>
                     
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Team Name</label>
+                        <label id="label-team" class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Team Name</label>
                         <input id="team" type="text" placeholder="e.g. Innovators" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
                     </div>
 
@@ -56,38 +56,47 @@
                         <input id="univ" type="text" placeholder="e.g. Diponegoro University" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
                     </div>
 
-                    <div class="mt-8">
-                        <h3 class="text-xl font-bold border-b border-white/10 pb-2 mb-4 uppercase tracking-widest text-[#00a8e8]">Proposal Document</h3>
-                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Upload PDF</label>
-                        <label class="file-upload-label h-24 flex-col text-center" for="pdf">
-                            <i class="fas fa-file-pdf text-2xl text-red-400 mb-2"></i>
-                            <span id="pdf-name" class="text-xs text-gray-300">Click to upload (.pdf)</span>
+                    <div class="mt-8" id="container-payment">
+                        <h3 class="text-xl font-bold border-b border-white/10 pb-2 mb-4 uppercase tracking-widest text-[#00a8e8]">Payment Details</h3>
+                        <div class="bg-white/5 p-4 rounded-lg mb-4 border border-white/10">
+                            <p class="text-xs text-gray-400 uppercase tracking-wider font-bold">Transfer to:</p>
+                            <p class="text-sm font-semibold text-white mt-1">Bank Mandiri</p>
+                            <p class="text-lg font-black text-[#ffcc00] tracking-wider">1360012345678</p>
+                            <p class="text-xs text-gray-300 mt-1">a.n. MECH-ONE 2026</p>
+                        </div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Upload Payment Proof (JPG, PNG)</label>
+                        <label class="file-upload-label h-24 flex-col text-center" for="payment-proof">
+                            <i class="fas fa-receipt text-2xl text-yellow-400 mb-2"></i>
+                            <span id="payment-proof-name" class="text-xs text-gray-300">Click to upload payment proof</span>
                         </label>
-                        <input id="pdf" type="file" accept="application/pdf" onchange="updateFileName('pdf', 'pdf-name')" />
+                        <input id="payment-proof" type="file" accept="image/png, image/jpeg, image/jpg" onchange="updateFileName('payment-proof', 'payment-proof-name')" />
+                        <div id="payment-proof-preview-container" class="mt-4 hidden flex justify-center">
+                            <img id="payment-proof-preview" class="max-h-48 rounded-lg border border-white/20 shadow-md" src="" alt="Payment Proof Preview" />
+                        </div>
                     </div>
                 </div>
 
                 <!-- Right Column: Members -->
-                <div class="space-y-6">
+                <div id="right-column" class="space-y-6">
                     <h3 class="text-xl font-bold border-b border-white/10 pb-2 mb-4 uppercase tracking-widest text-[#00a8e8]">Team Members</h3>
                     
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Leader / Member 1</label>
+                        <label id="label-m1" class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Leader / Member 1</label>
                         <input id="m1" type="text" placeholder="Full Name" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
                     </div>
-                    <div>
+                    <div id="container-m2">
                         <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Member 2</label>
-                        <input id="m2" type="text" placeholder="Full Name (Optional)" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
+                        <input id="m2" type="text" placeholder="Full Name" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
                     </div>
-                    <div>
+                    <div id="container-m3">
                         <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Member 3</label>
-                        <input id="m3" type="text" placeholder="Full Name (Optional)" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
+                        <input id="m3" type="text" placeholder="Full Name" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
                     </div>
-                    <div>
+                    <div id="container-m4">
                         <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Member 4</label>
                         <input id="m4" type="text" placeholder="Full Name (Optional)" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
                     </div>
-                    <div>
+                    <div id="container-m5">
                         <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Member 5</label>
                         <input id="m5" type="text" placeholder="Full Name (Optional)" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
                     </div>
@@ -116,7 +125,30 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         let compType = urlParams.get('type') || 'MDC';
-        document.getElementById("comp-name").innerText = compType === 'MDC' ? 'Mechanical Design (MDC)' : 'Business Plan (BPC)';
+
+        if (compType === 'SEM') {
+            document.getElementById("comp-name").innerText = 'Seminar Nasional (SEM)';
+            document.getElementById("left-heading").innerText = 'Participant Info';
+            document.getElementById("label-team").innerText = 'Full Name';
+            document.getElementById("team").placeholder = 'e.g. John Doe';
+            
+            // Hide the entire right column (Team Members)
+            document.getElementById("right-column").classList.add("hidden");
+            
+            // Hide payment block
+            document.getElementById("container-payment").classList.add("hidden");
+            
+            // Restructure form layout to be centered and narrower (looks more premium)
+            const formGrid = document.getElementById("form-grid");
+            formGrid.classList.remove("grid", "md:grid-cols-2", "gap-10");
+            formGrid.classList.add("max-w-md", "mx-auto", "space-y-6");
+        } else if (compType === 'BPC') {
+            document.getElementById("comp-name").innerText = 'Business Plan (BPC)';
+            document.getElementById("container-m4").classList.add("hidden");
+            document.getElementById("container-m5").classList.add("hidden");
+        } else {
+            document.getElementById("comp-name").innerText = 'Mechanical Design (MDC)';
+        }
 
         // Validate Profile before allowing registration
         async function validateProfile() {
@@ -132,7 +164,7 @@
                 const user = await getProfile(token);
                 if (user.error) throw new Error();
                 
-                const requiredFields = ['major', 'gender', 'batch', 'whatsapp_number', 'student_card_url', 'instagram_story_url', 'twibbon_url', 'instagram_follow_url', 'linkedin_follow_url', 'tiktok_follow_url', 'repost_instagram_url'];
+                const requiredFields = ['major', 'gender', 'batch', 'whatsapp_number', 'student_card_url', 'instagram_story_url', 'twibbon_url', 'instagram_follow_url', 'repost_instagram_url'];
                 
                 let isComplete = true;
                 for (const field of requiredFields) {
@@ -152,34 +184,58 @@
             }
         }
         
-        validateProfile();
-
         async function updateFileName(inputId, displayId) {
             const input = document.getElementById(inputId);
             const display = document.getElementById(displayId);
+            const previewContainer = document.getElementById("payment-proof-preview-container");
+            const previewImg = document.getElementById("payment-proof-preview");
+
             if (input.files && input.files.length > 0) {
                 const file = input.files[0];
-                
-                // TODO: Saat ini limit 10 MB. Ubah ke 5 MB nanti jika diperlukan (5 * 1024 * 1024)
-                const MAX_SIZE = 10 * 1024 * 1024;
+                const MAX_SIZE = 500 * 1024;
                 if (file.size > MAX_SIZE) {
-                    await showPopup("Ukuran file maksimal 10 MB!");
+                    await showPopup("Ukuran file maksimal 500 KB!");
                     input.value = "";
-                    display.innerText = "Click to upload (.pdf)";
+                    display.innerText = "Click to upload payment proof";
                     display.classList.remove("text-white");
                     display.classList.add("text-gray-300");
+                    previewContainer.classList.add("hidden");
+                    previewImg.src = "";
+                    return;
+                }
+                if (!file.type.startsWith("image/")) {
+                    await showPopup("Format file harus gambar (JPG, PNG)!");
+                    input.value = "";
+                    display.innerText = "Click to upload payment proof";
+                    display.classList.remove("text-white");
+                    display.classList.add("text-gray-300");
+                    previewContainer.classList.add("hidden");
+                    previewImg.src = "";
                     return;
                 }
 
                 display.innerText = file.name;
                 display.classList.add("text-white");
                 display.classList.remove("text-gray-300");
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewContainer.classList.remove("hidden");
+                }
+                reader.readAsDataURL(file);
             } else {
-                display.innerText = "Click to upload (.pdf)";
+                display.innerText = "Click to upload payment proof";
                 display.classList.remove("text-white");
                 display.classList.add("text-gray-300");
+                previewContainer.classList.add("hidden");
+                previewImg.src = "";
             }
         }
+
+        validateProfile();
+
+
     </script>
 
     <script>
@@ -188,14 +244,27 @@
             const btn = document.getElementById("submit");
             const originalText = btn.innerHTML;
 
+            // Set the competition type dynamically based on URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentCompType = urlParams.get('type') || 'MDC';
+
             const team = document.getElementById("team").value;
             const univ = document.getElementById("univ").value;
-            const m1 = document.getElementById("m1").value;
-            const pdfFile = document.getElementById("pdf").files[0];
+            const m1 = currentCompType === 'SEM' ? team : document.getElementById("m1").value;
+            const m2 = document.getElementById("m2").value;
+            const m3 = document.getElementById("m3").value;
+            const paymentProofFile = document.getElementById("payment-proof").files[0];
 
-            if (!team || !univ || !m1 || !pdfFile) {
-                await showPopup("Please fill in the Team Name, University, Leader Name, and upload a Proposal Document.");
-                return;
+            if (currentCompType === 'SEM') {
+                if (!team || !univ) {
+                    await showPopup("Please fill in your Full Name and University.");
+                    return;
+                }
+            } else {
+                if (!team || !univ || !m1 || !m2 || !m3 || !paymentProofFile) {
+                    await showPopup("Please fill in the Team Name, University, Leader Name, Member 2, Member 3, and upload your payment proof.");
+                    return;
+                }
             }
 
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
@@ -205,19 +274,16 @@
                 const formData = new FormData();
                 formData.append("team_name", team);
                 formData.append("university", univ);
-                
-                // Set the competition type dynamically based on URL parameter
-                const urlParams = new URLSearchParams(window.location.search);
-                let currentCompType = urlParams.get('type') || 'MDC';
                 formData.append("competition_type", currentCompType);
-
                 formData.append("member_1", m1);
-                formData.append("member_2", document.getElementById("m2").value);
-                formData.append("member_3", document.getElementById("m3").value);
-                formData.append("member_4", document.getElementById("m4").value);
-                formData.append("member_5", document.getElementById("m5").value);
-
-                formData.append("file", pdfFile);
+                formData.append("member_2", currentCompType === 'SEM' ? "" : m2);
+                formData.append("member_3", currentCompType === 'SEM' ? "" : m3);
+                formData.append("member_4", (currentCompType === 'BPC' || currentCompType === 'SEM') ? "" : document.getElementById("m4").value);
+                formData.append("member_5", (currentCompType === 'BPC' || currentCompType === 'SEM') ? "" : document.getElementById("m5").value);
+                
+                if (currentCompType !== 'SEM') {
+                    formData.append("file", paymentProofFile);
+                }
 
                 const res = await registerCompetition(formData, token);
                 
