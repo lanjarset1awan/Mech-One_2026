@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { registerCompetition, checkRegistrationStatus } from "../controllers/competitionController.js";
+import { registerCompetition, checkRegistrationStatus, uploadProposal } from "../controllers/competitionController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -13,6 +13,13 @@ router.post(
     authMiddleware,
     upload.single("file"),
     registerCompetition
+);
+
+router.post(
+    "/upload-proposal",
+    authMiddleware,
+    upload.single("file"),
+    uploadProposal
 );
 
 export default router;

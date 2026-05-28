@@ -110,7 +110,7 @@ export const checkRegistrationStatus = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from("registrations")
-            .select("status, competition_type")
+            .select("status, competition_type, registrations, proposal_title")
             .eq("user_id", userId)
             .single();
 
@@ -122,7 +122,80 @@ export const checkRegistrationStatus = async (req, res) => {
             return res.json({ registered: false });
         }
 
-        res.json({ registered: true, status: data.status, type: data.competition_type });
+        res.json({ 
+            registered: true, 
+            status: data.status, 
+            type: data.competition_type,
+            registrations: data.registrations,
+            proposal_title: data.proposal_title
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export const uploadProposal = async (req, res) => {
+    const userId = req.user.id;
+    const file = req.file;
+    const { proposal_title } = req.body;
+
+    try {
+        // Check if registration exists
+        const { data: reg, error: regError } = await supabase
+            .from("registrations")
+            .select("id, competition_type")
+            .eq("user_id", userId)
+            .single();
+
+        if (regError || !reg) {
+            return res.status(400).json({ error: "You are not registered for any competition yet." });
+        }
+
+        if (reg.competition_type === "SEM") {
+            return res.status(400).json({ error: "Seminar participants do not need to submit a proposal." });
+        }
+
+        if (!proposal_title || proposal_title.trim() === "") {
+            return res.status(400).json({ error: "Proposal title is required." });
+        }
+
+        if (!file) {
+            return res.status(400).json({ error: "No file uploaded." });
+        }
+
+        if (file.mimetype !== "application/pdf") {
+            return res.status(400).json({ error: "Only PDF files are allowed!" });
+        }
+
+        if (file.size > 500 * 1024) { // 500 KB
+            return res.status(400).json({ error: "Proposal size must not exceed 500 KB." });
+        }
+
+        const originalName = file.originalname || "proposal.pdf";
+        const fileExt = originalName.split(".").pop();
+        const uniqueName = `proposal_${Date.now()}.${fileExt}`;
+        const filePath = `${userId}/${uniqueName}`;
+
+        const { data: upload, error: uploadError } = await supabase.storage
+            .from("submition")
+            .upload(filePath, file.buffer, {
+                contentType: file.mimetype,
+                upsert: true,
+            });
+
+        if (uploadError) return res.status(500).json({ error: uploadError.message });
+
+        const { error: dbError } = await supabase
+            .from("registrations")
+            .update({ 
+                registrations: upload.path,
+                proposal_title: proposal_title
+            })
+            .eq("user_id", userId);
+
+        if (dbError) return res.status(400).json({ error: dbError.message });
+
+        res.json({ success: true, path: upload.path, proposal_title });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

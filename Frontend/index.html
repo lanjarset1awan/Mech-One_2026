@@ -11,6 +11,35 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="./css/index.css">
+    <style>
+        .input-field {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #ffcc00;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+        }
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .file-upload-label:hover {
+            border-color: #ffcc00;
+            background: rgba(255, 204, 0, 0.05);
+        }
+    </style>
 </head>
 
 <body class="antialiased">
@@ -111,75 +140,284 @@
         </div>
     </section>
 
+    <!-- Background Section -->
+    <section id="background" class="py-16 md:py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-12 items-center">
+                <!-- Left Content: Title & Tagline/Footer -->
+                <div class="md:col-span-5 text-center md:text-left">
+                    <div class="mb-8 text-center md:text-left">
+                        <div
+                            class="inline-block bg-gradient-to-r from-blue-600/20 to-red-700/20 border border-white/10 px-5 py-2.5 rounded shadow-lg mb-3">
+                            <span
+                                class="text-white font-black text-2xl md:text-4xl tracking-wider uppercase">BACKGROUND</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-black uppercase text-slate-300 mt-1">OF THE EVENT</h2>
+                    </div>
+
+                    <!-- Tagline from the footer of the image -->
+                    <div class="mt-8 pt-8 border-t border-white/10 hidden md:block">
+                        <p class="text-sm md:text-base text-slate-400 italic font-light leading-relaxed">
+                            "Where engineering minds turn energy challenges into future solutions."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Content: The 3 paragraphs -->
+                <div class="md:col-span-7 space-y-6 text-slate-300 text-sm md:text-base leading-relaxed">
+                    <p>
+                        The transition toward <span class="text-[#ffcc00] font-semibold">renewable energy</span> has
+                        become one of the most important movements in shaping a <span
+                            class="text-[#00a8e8] font-semibold">cleaner and more resilient future</span>. As global
+                        energy challenges continue to grow, <span class="text-white font-semibold">innovation</span> is
+                        needed not only in technology, but also in the way ideas are designed, developed, and
+                        implemented.
+                    </p>
+                    <p>
+                        At the same time, <span class="text-[#ffcc00] font-semibold">coastal areas</span> such as
+                        Semarang face real environmental challenges, including <span
+                            class="text-red-400 font-semibold">tidal flooding, land subsidence, waste issues</span>, and
+                        the need for more adaptive infrastructure. These conditions require solutions that combine <span
+                            class="text-white font-semibold">engineering, sustainability, and practical
+                            implementation</span>.
+                    </p>
+                    <p>
+                        <span class="text-[#00a8e8] font-bold">Mech-ONE</span> is created as a response to that
+                        challenge. Through <span class="text-[#ffcc00] font-semibold">mechanical design, sustainable
+                            business planning, and national discussion</span>, this event encourages students to
+                        transform coastal and energy problems into <span
+                            class="text-white font-semibold">future-oriented solutions</span>.
+                    </p>
+
+                    <!-- Tagline for mobile view -->
+                    <div class="pt-6 border-t border-white/10 md:hidden text-center">
+                        <p class="text-xs text-slate-400 italic font-light">
+                            "Where engineering minds turn energy challenges into future solutions."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Goals & Impact Section -->
+    <section id="goals" class="py-16 md:py-32 px-6 bg-black/10">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-16 items-start">
+
+                <!-- Left Column: Goals & Objectives -->
+                <div class="md:col-span-7">
+                    <!-- Title -->
+                    <div class="mb-10 text-center md:text-left">
+                        <div
+                            class="inline-block bg-gradient-to-r from-blue-600/20 to-red-700/20 border border-white/10 px-5 py-2.5 rounded shadow-lg mb-3">
+                            <span
+                                class="text-white font-black text-2xl md:text-4xl tracking-wider uppercase">Goals</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-black uppercase text-slate-300 mt-1">& Objectives</h2>
+                    </div>
+
+                    <!-- 6 List Items with alternating gradient/glass cards -->
+                    <div class="space-y-4">
+                        <!-- Item 1 -->
+                        <div
+                            class="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-xl shadow-sm hover:bg-white/10 transition-colors">
+                            <div
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-600/20 text-[#00a8e8] font-black text-lg border border-[#00a8e8]/20 shrink-0">
+                                1
+                            </div>
+                            <p class="text-slate-300 text-sm md:text-base">Encourage student innovation in renewable
+                                energy technology.</p>
+                        </div>
+                        <!-- Item 2 -->
+                        <div
+                            class="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-xl shadow-sm hover:bg-white/10 transition-colors">
+                            <div
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-red-600/20 text-[#ffcc00] font-black text-lg border border-[#ffcc00]/20 shrink-0">
+                                2
+                            </div>
+                            <p class="text-slate-300 text-sm md:text-base">Develop critical and engineering-based
+                                thinking.</p>
+                        </div>
+                        <!-- Item 3 -->
+                        <div
+                            class="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-xl shadow-sm hover:bg-white/10 transition-colors">
+                            <div
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-600/20 text-[#00a8e8] font-black text-lg border border-[#00a8e8]/20 shrink-0">
+                                3
+                            </div>
+                            <p class="text-slate-300 text-sm md:text-base">Connect technical design with sustainable
+                                business perspectives.</p>
+                        </div>
+                        <!-- Item 4 -->
+                        <div
+                            class="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-xl shadow-sm hover:bg-white/10 transition-colors">
+                            <div
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-red-600/20 text-[#ffcc00] font-black text-lg border border-[#ffcc00]/20 shrink-0">
+                                4
+                            </div>
+                            <p class="text-slate-300 text-sm md:text-base">Strengthen collaboration between students,
+                                academics, and industry.</p>
+                        </div>
+                        <!-- Item 5 -->
+                        <div
+                            class="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-xl shadow-sm hover:bg-white/10 transition-colors">
+                            <div
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-600/20 text-[#00a8e8] font-black text-lg border border-[#00a8e8]/20 shrink-0">
+                                5
+                            </div>
+                            <p class="text-slate-300 text-sm md:text-base">Build awareness of coastal sustainability and
+                                clean energy transition.</p>
+                        </div>
+                        <!-- Item 6 -->
+                        <div
+                            class="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-xl shadow-sm hover:bg-white/10 transition-colors">
+                            <div
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-red-600/20 text-[#ffcc00] font-black text-lg border border-[#ffcc00]/20 shrink-0">
+                                6
+                            </div>
+                            <p class="text-slate-300 text-sm md:text-base">Create a new platform for mechanical
+                                engineering innovation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Impact Direction -->
+                <div class="md:col-span-5 md:sticky md:top-28">
+                    <!-- Title -->
+                    <div class="mb-10 text-center md:text-left">
+                        <div
+                            class="inline-block bg-gradient-to-r from-blue-600/20 to-red-700/20 border border-white/10 px-5 py-2.5 rounded shadow-lg mb-3">
+                            <span
+                                class="text-white font-black text-2xl md:text-4xl tracking-wider uppercase">Impact</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-black uppercase text-slate-300 mt-1">Direction</h2>
+                    </div>
+
+                    <!-- Impact Box -->
+                    <div
+                        class="relative group overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl transition-all duration-300 hover:border-white/20">
+                        <div
+                            class="absolute -right-10 -bottom-10 w-40 h-40 bg-gradient-to-br from-blue-600/10 to-red-600/10 rounded-full blur-2xl group-hover:scale-125 transition-transform duration-500">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a8e8]/20 to-red-600/20 border border-white/10 text-white mb-6">
+                                <i class="fas fa-bullseye text-[#ffcc00] text-xl"></i>
+                            </div>
+                            <p class="text-gray-300 text-base md:text-lg leading-relaxed font-light">
+                                A starting point for student-driven innovation in <span
+                                    class="text-[#00a8e8] font-bold">ocean energy</span>, <span
+                                    class="text-[#ffcc00] font-semibold">coastal sustainability</span>, and <span
+                                    class="text-white font-semibold">sustainable engineering solutions</span>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
     <!-- Events Section -->
     <section id="events" class="py-16 md:py-32 px-6">
         <div class="max-w-7xl mx-auto">
-            <div class="mb-12 md:mb-20 text-center">
+            <!-- Main Section Title -->
+            <div class="mb-16 md:mb-24 text-center">
                 <h2 class="text-3xl md:text-5xl font-black uppercase mb-4 tracking-tight">Events</h2>
                 <div class="h-1 w-20 bg-[#ffcc00] mx-auto"></div>
             </div>
-            <div class="grid md:grid-cols-2 gap-10">
-                <!-- MDC Card -->
-                <div
-                    class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between">
-                    <div>
-                        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <i class="fas fa-microchip text-6xl md:text-7xl text-[#00a8e8]"></i>
-                        </div>
-                        <h3 class="text-3xl md:text-4xl font-black mb-2">MDC</h3>
-                        <p class="text-[#00a8e8] font-bold text-sm tracking-[0.3em] uppercase mb-6">Mechanical Design
-                        </p>
-                        <p class="text-slate-400 leading-relaxed mb-8">
-                            Push the boundaries of mechanical systems. Focus on efficiency, sustainability, and
-                            technical
-                            precision in renewable energy engineering.
-                        </p>
-                    </div>
-                    <button id="btn-mdc" onclick="goRegisterCompetition('MDC')"
-                        class="mt-auto px-6 py-3 md:px-8 md:py-3 bg-white/10 hover:bg-[#00a8e8] text-white font-bold rounded-sm transition-colors uppercase text-[10px] md:text-xs tracking-widest w-full md:w-fit border border-white/20 text-center">
-                        Register Team
-                    </button>
+
+            <!-- Competitions Outer Container -->
+            <div
+                class="border border-white/10 rounded-[2rem] p-8 md:p-12 mb-16 bg-white/[0.02] backdrop-blur-sm relative">
+                <!-- Inner Title -->
+                <div class="mb-10 text-center">
+                    <h3 class="text-2xl md:text-4xl font-black uppercase text-white tracking-widest">Competitions</h3>
                 </div>
-                <!-- BPC Card -->
-                <div
-                    class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between">
-                    <div>
-                        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <i class="fas fa-briefcase text-6xl md:text-7xl text-[#ffcc00]"></i>
+
+                <div class="grid md:grid-cols-2 gap-10">
+                    <!-- MDC Card -->
+                    <div
+                        class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between">
+                        <div>
+                            <div
+                                class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <i class="fas fa-microchip text-6xl md:text-7xl text-[#00a8e8]"></i>
+                            </div>
+                            <h4 class="text-3xl md:text-4xl font-black mb-2">MDC</h4>
+                            <p class="text-[#00a8e8] font-bold text-sm tracking-[0.3em] uppercase mb-6">Mechanical
+                                Design</p>
+                            <p class="text-slate-400 leading-relaxed mb-8">
+                                Push the boundaries of mechanical systems. Focus on efficiency, sustainability, and
+                                technical precision in renewable energy engineering.
+                            </p>
                         </div>
-                        <h3 class="text-3xl md:text-4xl font-black mb-2">BPC</h3>
-                        <p class="text-[#ffcc00] font-bold text-sm tracking-[0.3em] uppercase mb-6">Business Plan</p>
-                        <p class="text-slate-400 leading-relaxed mb-8">
-                            Transform technical innovation into market leadership. Develop resilient business models for
-                            the
-                            evolving energy landscape.
-                        </p>
+                        <div class="flex flex-wrap gap-4 mt-auto items-center" id="actions-mdc">
+                            <button id="btn-mdc" onclick="goRegisterCompetition('MDC')"
+                                class="px-6 py-3 bg-white/10 hover:bg-[#00a8e8] text-white font-bold rounded-sm transition-colors uppercase text-[10px] md:text-xs tracking-widest border border-white/20 text-center flex-1 md:flex-none">
+                                Register Team
+                            </button>
+                        </div>
                     </div>
-                    <button id="btn-bpc" onclick="goRegisterCompetition('BPC')"
-                        class="mt-auto px-6 py-3 md:px-8 md:py-3 bg-white/10 hover:bg-[#ffcc00] hover:text-[#0a1d37] text-white font-bold rounded-sm transition-colors uppercase text-[10px] md:text-xs tracking-widest w-full md:w-fit border border-white/20 text-center">
-                        Register Team
-                    </button>
+
+                    <!-- BPC Card -->
+                    <div
+                        class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between">
+                        <div>
+                            <div
+                                class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <i class="fas fa-briefcase text-6xl md:text-7xl text-[#ffcc00]"></i>
+                            </div>
+                            <h4 class="text-3xl md:text-4xl font-black mb-2">BPC</h4>
+                            <p class="text-[#ffcc00] font-bold text-sm tracking-[0.3em] uppercase mb-6">Business Plan
+                            </p>
+                            <p class="text-slate-400 leading-relaxed mb-8">
+                                Transform technical innovation into market leadership. Develop resilient business models
+                                for the evolving energy landscape.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-4 mt-auto items-center" id="actions-bpc">
+                            <button id="btn-bpc" onclick="goRegisterCompetition('BPC')"
+                                class="px-6 py-3 bg-white/10 hover:bg-[#ffcc00] hover:text-[#0a1d37] text-white font-bold rounded-sm transition-colors uppercase text-[10px] md:text-xs tracking-widest border border-white/20 text-center flex-1 md:flex-none">
+                                Register Team
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- SEM Card -->
-            <div class="flex justify-center mt-10">
-                <div
-                    class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between max-w-xl w-full">
-                    <div>
-                        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <i class="fas fa-university text-6xl md:text-7xl text-[#ffcc00]"></i>
+
+            <!-- Seminar Nasional Outer Container -->
+            <div
+                class="border border-white/10 rounded-[2rem] p-8 md:p-12 bg-white/[0.02] backdrop-blur-sm relative max-w-4xl mx-auto">
+                <!-- Inner Title -->
+                <div class="mb-10 text-center">
+                    <h3 class="text-2xl md:text-4xl font-black uppercase text-white tracking-widest">Seminar Nasional
+                    </h3>
+                </div>
+
+                <div class="flex justify-center">
+                    <!-- SEM Card -->
+                    <div
+                        class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between w-full">
+                        <div>
+                            <div
+                                class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <i class="fas fa-university text-6xl md:text-7xl text-[#ffcc00]"></i>
+                            </div>
+                            <h4 class="text-3xl md:text-4xl font-black mb-2">Seminar Nasional</h4>
+                            <p class="text-[#ffcc00] font-bold text-sm tracking-[0.3em] uppercase mb-6">National Seminar
+                            </p>
+                            <p class="text-slate-400 leading-relaxed mb-8">
+                                Join us in discussing the future of engineering, technology, and energy transition with
+                                prominent speakers and industry experts.
+                            </p>
                         </div>
-                        <h3 class="text-3xl md:text-4xl font-black mb-2">Seminar Nasional</h3>
-                        <p class="text-[#ffcc00] font-bold text-sm tracking-[0.3em] uppercase mb-6">National Seminar</p>
-                        <p class="text-slate-400 leading-relaxed mb-8">
-                            Join us in discussing the future of engineering, technology, and energy transition with
-                            prominent speakers and industry experts.
-                        </p>
+                        <button id="btn-sem" onclick="goRegisterCompetition('SEM')"
+                            class="mt-auto px-6 py-3 md:px-8 md:py-3 bg-white/10 hover:bg-[#ffcc00] hover:text-[#0a1d37] text-white font-bold rounded-sm transition-colors uppercase text-[10px] md:text-xs tracking-widest w-full md:w-fit border border-white/20 text-center">
+                            Register Seminar
+                        </button>
                     </div>
-                    <button id="btn-sem" onclick="goRegisterCompetition('SEM')"
-                        class="mt-auto px-6 py-3 md:px-8 md:py-3 bg-white/10 hover:bg-[#ffcc00] hover:text-[#0a1d37] text-white font-bold rounded-sm transition-colors uppercase text-[10px] md:text-xs tracking-widest w-full md:w-fit border border-white/20 text-center">
-                        Register Seminar
-                    </button>
                 </div>
             </div>
         </div>
@@ -454,6 +692,8 @@
         </div>
     </footer>
 
+
+
     <script src="./js/api.js"></script>
     <script src="./js/popup.js"></script>
     <script>
@@ -497,37 +737,49 @@
             try {
                 const res = await getRegistrationStatus(token);
                 if (res.registered) {
-                    const btnMdc = document.getElementById("btn-mdc");
-                    const btnBpc = document.getElementById("btn-bpc");
+                    const actionsMdc = document.getElementById("actions-mdc");
+                    const actionsBpc = document.getElementById("actions-bpc");
                     const btnSem = document.getElementById("btn-sem");
 
                     let statusHtml = '';
                     if (res.status === 'approved') {
-                        statusHtml = `<div class="mt-auto px-8 py-3 bg-green-500/10 text-green-400 font-bold rounded-sm uppercase text-xs tracking-widest w-fit border border-green-500/40 flex items-center gap-2">
+                        statusHtml = `<div class="px-8 py-3 bg-green-500/10 text-green-400 font-bold rounded-sm uppercase text-xs tracking-widest w-fit border border-green-500/40 flex items-center gap-2">
                             <i class="fas fa-check-circle text-green-500"></i> Registration Approved
                         </div>`;
                     } else if (res.status === 'rejected') {
-                        statusHtml = `<div class="mt-auto px-8 py-3 bg-red-500/10 text-red-400 font-bold rounded-sm uppercase text-xs tracking-widest w-fit border border-red-500/40 flex items-center gap-2">
+                        statusHtml = `<div class="px-8 py-3 bg-red-500/10 text-red-400 font-bold rounded-sm uppercase text-xs tracking-widest w-fit border border-red-500/40 flex items-center gap-2">
                             <i class="fas fa-times-circle text-red-500"></i> Registration Rejected
                         </div>`;
                     } else {
-                        statusHtml = `<div class="mt-auto px-8 py-3 bg-white/10 text-gray-400 font-bold rounded-sm uppercase text-xs tracking-widest w-fit border border-white/20 flex items-center gap-2">
+                        statusHtml = `<div class="px-8 py-3 bg-white/10 text-gray-400 font-bold rounded-sm uppercase text-xs tracking-widest w-fit border border-white/20 flex items-center gap-2">
                             <i class="fas fa-clock text-yellow-400"></i> Registration Processed
                         </div>`;
                     }
 
+                    let submissionBtnHtml = '';
+                    if (res.type !== 'SEM') {
+                        const btnText = res.registrations ? 'Update Proposal' : 'Submission';
+                        const btnStyle = res.registrations 
+                            ? 'border-green-500 text-green-400 hover:bg-green-500 hover:text-white' 
+                            : 'border-white text-white hover:bg-white hover:text-black';
+                        submissionBtnHtml = `<a href="submit-proposal.html" 
+                            class="px-6 py-2.5 border-2 ${btnStyle} font-bold rounded-full transition-all uppercase text-[10px] md:text-xs tracking-widest text-center inline-block">
+                            ${btnText}
+                        </a>`;
+                    }
+
                     if (res.type === 'MDC') {
-                        if (btnMdc) btnMdc.outerHTML = statusHtml;
-                        if (btnBpc) btnBpc.outerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for MDC.</div>`;
+                        if (actionsMdc) actionsMdc.innerHTML = statusHtml + submissionBtnHtml;
+                        if (actionsBpc) actionsBpc.innerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for MDC.</div>`;
                         if (btnSem) btnSem.outerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for MDC.</div>`;
                     } else if (res.type === 'BPC') {
-                        if (btnBpc) btnBpc.outerHTML = statusHtml;
-                        if (btnMdc) btnMdc.outerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for BPC.</div>`;
+                        if (actionsBpc) actionsBpc.innerHTML = statusHtml + submissionBtnHtml;
+                        if (actionsMdc) actionsMdc.innerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for BPC.</div>`;
                         if (btnSem) btnSem.outerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for BPC.</div>`;
                     } else if (res.type === 'SEM') {
                         if (btnSem) btnSem.outerHTML = statusHtml;
-                        if (btnMdc) btnMdc.outerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for Seminar.</div>`;
-                        if (btnBpc) btnBpc.outerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for Seminar.</div>`;
+                        if (actionsMdc) actionsMdc.innerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for Seminar.</div>`;
+                        if (actionsBpc) actionsBpc.innerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for Seminar.</div>`;
                     }
                 }
             } catch (e) {

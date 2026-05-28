@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Proposal - Mech-ONE 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat:wght@700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/register-competition.css">
+</head>
+
+<body class="antialiased">
+
+    <!-- Navbar -->
+    <nav class="w-full z-50 bg-[#0a1d37]/40 backdrop-blur-md border-b border-white/10 absolute top-0">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-5 flex justify-between items-center">
+            <div class="text-xl md:text-2xl font-black tracking-tighter shrink-0">
+                <a href="index.html">MECH<span class="text-[#ffcc00]">-ONE</span> <span class="font-light hidden sm:inline">2026</span></a>
+            </div>
+            
+            <div class="flex items-center space-x-3 md:space-x-4 shrink-0">
+                <a href="profile.html" class="px-3 py-2 md:px-5 md:py-2.5 bg-white/10 hover:bg-white/20 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-sm transition-colors border border-white/20">Profile</a>
+                <a href="index.html" class="px-3 py-2 md:px-5 md:py-2.5 bg-[#800000] hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-sm transition-colors border border-white/20">Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Submission Form Section -->
+    <section class="flex-grow flex items-center justify-center px-4 md:px-6 pt-32 pb-12">
+        <div class="glass-card p-8 md:p-12 rounded-3xl w-full max-w-2xl relative overflow-hidden shadow-2xl">
+            <!-- Decorative Icon -->
+            <div class="absolute top-0 right-0 p-6 opacity-10">
+                <i class="fas fa-file-upload text-6xl md:text-7xl text-[#ffcc00]"></i>
+            </div>
+            
+            <h2 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight relative z-10" id="form-heading">Submit Proposal</h2>
+            <p class="text-slate-400 text-sm mb-8 relative z-10">Upload proposal for your registered event: <span id="comp-name" class="text-[#ffcc00] font-bold">...</span></p>
+
+            <form onsubmit="handleProposalSubmit(event)" class="space-y-6 relative z-10">
+                <!-- Proposal Title -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Proposal Title</label>
+                    <input id="proposal-title" type="text" required placeholder="e.g. Smart Ocean Wave Converter" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
+                </div>
+
+                <!-- File upload dropzone -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Proposal File (PDF, Max 500KB)</label>
+                    <label class="file-upload-label h-28 flex flex-col text-center" for="proposal-file" id="dropzone">
+                        <i class="fas fa-file-pdf text-3xl text-yellow-400 mb-2"></i>
+                        <span id="dropzone-text" class="text-xs text-gray-300">Click to select PDF file</span>
+                    </label>
+                    <input id="proposal-file" type="file" accept="application/pdf" onchange="handleProposalFileChange(event)" />
+                </div>
+
+                <!-- PDF Preview Container -->
+                <div id="pdf-preview-container" class="hidden space-y-3">
+                    <div class="flex items-center gap-3 bg-white/5 border border-white/10 p-3 rounded-sm">
+                        <i class="fas fa-file-pdf text-2xl text-[#00a8e8]"></i>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm text-white font-semibold truncate" id="preview-filename">proposal.pdf</p>
+                            <p class="text-xs text-slate-400" id="preview-filesize">0 KB</p>
+                        </div>
+                        <button type="button" onclick="removeProposalFile(event)" class="text-red-400 hover:text-red-500 text-sm p-1">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- PDF Live Preview frame -->
+                    <div class="rounded-sm overflow-hidden border border-white/10 h-64 w-full bg-slate-900 relative">
+                        <iframe id="pdf-preview-iframe" class="w-full h-full" src=""></iframe>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="border-t border-white/10 pt-6 flex justify-end">
+                    <button type="submit" id="submit-btn" class="w-full md:w-auto px-6 py-3 md:px-10 md:py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-black rounded-sm transition-transform hover:scale-105 uppercase text-sm tracking-widest shadow-lg shadow-yellow-900/30">
+                        Submit Proposal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="./js/api.js"></script>
+    <script src="./js/popup.js"></script>
+    <script>
+        const token = localStorage.getItem("token");
+        if (!token) window.location.href = "login.html";
+
+        let selectedFile = null;
+        let isUpdate = false;
+
+        async function initPage() {
+            try {
+                const res = await getRegistrationStatus(token);
+                if (!res.registered) {
+                    await showPopup("⚠️ Akses Ditolak!\n\nAnda belum terdaftar di kompetisi apa pun.");
+                    window.location.href = "index.html";
+                    return;
+                }
+
+                if (res.type === 'SEM') {
+                    await showPopup("⚠️ Akses Ditolak!\n\nPeserta Seminar tidak memerlukan proposal.");
+                    window.location.href = "index.html";
+                    return;
+                }
+
+                document.getElementById("comp-name").innerText = res.type;
+                
+                if (res.registrations) {
+                    isUpdate = true;
+                    document.getElementById("form-heading").innerText = "Update Proposal";
+                    document.getElementById("submit-btn").innerText = "Update Proposal";
+                    document.getElementById("proposal-title").value = res.proposal_title || "";
+                    document.getElementById("dropzone-text").innerText = "Replace PDF file";
+                }
+            } catch (err) {
+                console.error(err);
+                await showPopup("Gagal memuat status pendaftaran.");
+                window.location.href = "index.html";
+            }
+        }
+
+        function handleProposalFileChange(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.type !== "application/pdf") {
+                showPopup("Format berkas harus PDF!");
+                event.target.value = "";
+                return;
+            }
+
+            if (file.size > 500 * 1024) {
+                showPopup("Ukuran file maksimal 500 KB!");
+                event.target.value = "";
+                return;
+            }
+
+            selectedFile = file;
+            
+            document.getElementById("preview-filename").innerText = file.name;
+            document.getElementById("preview-filesize").innerText = (file.size / 1024).toFixed(1) + " KB";
+            
+            const fileURL = URL.createObjectURL(file);
+            document.getElementById("pdf-preview-iframe").src = fileURL;
+
+            document.getElementById("dropzone").classList.add("hidden");
+            document.getElementById("pdf-preview-container").classList.remove("hidden");
+        }
+
+        function removeProposalFile(event) {
+            if (event) event.preventDefault();
+            selectedFile = null;
+            document.getElementById("proposal-file").value = "";
+            
+            const iframe = document.getElementById("pdf-preview-iframe");
+            if (iframe.src && iframe.src.startsWith("blob:")) {
+                URL.revokeObjectURL(iframe.src);
+            }
+            iframe.src = "";
+
+            document.getElementById("dropzone").classList.remove("hidden");
+            document.getElementById("pdf-preview-container").classList.add("hidden");
+            
+            if (isUpdate) {
+                document.getElementById("dropzone-text").innerText = "Replace PDF file";
+            } else {
+                document.getElementById("dropzone-text").innerText = "Click to select PDF file";
+            }
+        }
+
+        async function handleProposalSubmit(event) {
+            event.preventDefault();
+            const title = document.getElementById("proposal-title").value.trim();
+            if (!title) {
+                await showPopup("Judul proposal wajib diisi.");
+                return;
+            }
+
+            if (!selectedFile) {
+                await showPopup("Silakan pilih berkas PDF proposal terlebih dahulu.");
+                return;
+            }
+
+            const btn = document.getElementById("submit-btn");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append("file", selectedFile);
+            formData.append("proposal_title", title);
+
+            try {
+                const res = await uploadProposal(formData, token);
+                if (res.success) {
+                    await showPopup("Proposal berhasil dikirim!", false);
+                    window.location.href = "index.html";
+                } else {
+                    await showPopup("Pengunggahan gagal: " + (res.error || "Terjadi kesalahan"));
+                }
+            } catch (err) {
+                await showPopup("Terjadi kesalahan sistem: " + err.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        initPage();
+    </script>
+</body>
+</html>

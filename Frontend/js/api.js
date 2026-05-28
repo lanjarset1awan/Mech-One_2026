@@ -71,3 +71,14 @@ async function updateProfile(data, token) {
     });
     return res.json();
 }
+
+async function uploadProposal(formData, token) {
+    const res = await fetch(`${BASE_URL}/competition/upload-proposal`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+    });
+    return res.json();
+}
