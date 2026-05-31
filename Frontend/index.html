@@ -81,7 +81,7 @@
                     class="px-6 py-3 md:px-10 md:py-4 bg-[#ffcc00] text-[#0a1d37] font-black rounded-sm hover:scale-105 transition-transform uppercase text-sm shadow-lg shadow-yellow-900/20">
                     Register Account
                 </button>
-                <button onclick="window.open('https://drive.google.com/drive/folders/12cALP7C5qpe045LTx6dYupA33UQYIVgZ', '_blank')"
+                <button onclick="window.location.href='guidebook.html'"
                     class="px-6 py-3 md:px-10 md:py-4 border-2 border-white/20 hover:bg-white/10 font-bold rounded-sm transition-all uppercase text-sm">
                     Guidebook
                 </button>
@@ -725,11 +725,11 @@
             window.location.reload();
         }
 
-        function goRegisterCompetition(type) {
+        async function goRegisterCompetition(type) {
             const token = localStorage.getItem("token");
             if (!token) {
-                alert("Please login first to register your team.");
-                window.location.href = "login.html";
+                await showPopup("Please register an account first to register your team.");
+                window.location.href = "register.html";
             } else {
                 window.location.href = "register-competition.html?type=" + type;
             }

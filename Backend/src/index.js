@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
     res.json({ message: "Mech-ONE Backend Running 🚀" });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5005;
 
 if (process.env.NODE_ENV !== "production") {
     app.listen(PORT, () => {

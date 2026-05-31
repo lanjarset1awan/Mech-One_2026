@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Guidebooks - Mech-ONE 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/guidebook.css">
+</head>
+
+<body class="antialiased pb-20">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-[#0a1d37]/40 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-5 flex justify-between items-center">
+            <div class="text-xl md:text-2xl font-black tracking-tighter shrink-0">
+                <a href="index.html">MECH<span class="text-[#ffcc00]">-ONE</span> <span class="font-light hidden sm:inline">2026</span></a>
+            </div>
+
+            <!-- Navbar Buttons (Right) -->
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 md:space-x-4" id="auth-buttons">
+                    <!-- Dynamically populated by JS -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Section -->
+    <main class="flex-grow flex flex-col items-center justify-center px-4 md:px-6 pt-32 pb-12">
+        <div class="max-w-5xl w-full text-center mb-10">
+            <h1 class="text-3xl md:text-5xl font-black leading-tight uppercase mb-4 tracking-tight">
+                Event <span class="text-[#ffcc00]">Guidebooks</span>
+            </h1>
+            <p class="text-slate-300 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed">
+                Choose a competition category below to read and view the official guidebooks in your browser.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 md:gap-10 max-w-5xl w-full">
+            
+            <!-- BPC Card -->
+            <div class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between shadow-2xl">
+                <!-- Decorative Icon in Background -->
+                <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i class="fas fa-briefcase text-7xl text-[#ffcc00]"></i>
+                </div>
+                
+                <div>
+                    <div class="flex items-center justify-center w-14 h-14 rounded-2xl bg-[#ffcc00]/10 border border-[#ffcc00]/30 text-[#ffcc00] mb-6">
+                        <i class="fas fa-briefcase text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight">Business Plan</h2>
+                    <p class="text-[#ffcc00] font-bold text-xs tracking-[0.2em] uppercase mb-6">BPC Competition</p>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                        Learn about the BPC regulations, deliverables, and requirements for the preliminary phase to successfully turn engineering designs into viable business ventures.
+                    </p>
+                </div>
+                
+                <div class="mt-auto pt-6 border-t border-white/5">
+                    <a href="./assets/BPC Guidebook_Preliminary- MechONE.pdf" target="_blank"
+                        class="inline-flex items-center justify-center w-full gap-2 px-6 py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-black rounded-sm transition-transform hover:scale-[1.02] uppercase text-xs tracking-widest shadow-lg shadow-yellow-900/20">
+                        <i class="fas fa-file-pdf"></i> View Preliminary Guidebook
+                    </a>
+                </div>
+            </div>
+
+            <!-- MDC Card -->
+            <div class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between shadow-2xl">
+                <!-- Decorative Icon in Background -->
+                <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i class="fas fa-microchip text-7xl text-[#00a8e8]"></i>
+                </div>
+                
+                <div>
+                    <div class="flex items-center justify-center w-14 h-14 rounded-2xl bg-[#00a8e8]/10 border border-[#00a8e8]/30 text-[#00a8e8] mb-6">
+                        <i class="fas fa-microchip text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight">Mechanical Design</h2>
+                    <p class="text-[#00a8e8] font-bold text-xs tracking-[0.2em] uppercase mb-6">MDC Competition</p>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                        Read the general competition guideline and the specific case study rules to design state-of-the-art mechanical systems for coastal sustainability and energy.
+                    </p>
+                </div>
+                
+                <div class="mt-auto pt-6 border-t border-white/5 space-y-3">
+                    <a href="./assets/MDC Guidebook_General - MechONE.pdf" target="_blank"
+                        class="inline-flex items-center justify-center w-full gap-2 px-6 py-4 bg-[#00a8e8] hover:bg-blue-400 text-white font-bold rounded-sm transition-transform hover:scale-[1.02] uppercase text-xs tracking-widest shadow-lg shadow-blue-900/20">
+                        <i class="fas fa-file-pdf"></i> View General Guidebook
+                    </a>
+                    <a href="./assets/MDC Guidebook_Case - MechONE.pdf" target="_blank"
+                        class="inline-flex items-center justify-center w-full gap-2 px-6 py-4 bg-[#00a8e8] hover:bg-blue-400 text-white font-bold rounded-sm transition-transform hover:scale-[1.02] uppercase text-xs tracking-widest shadow-lg shadow-blue-900/20">
+                        <i class="fas fa-file-pdf"></i> View Case Guidebook
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Script to Handle Navbar State -->
+    <script>
+        function updateNavbar() {
+            const token = localStorage.getItem("token");
+            const authContainer = document.getElementById("auth-buttons");
+
+            if (token) {
+                authContainer.innerHTML = `
+                    <a href="profile.html" class="px-3 py-2 md:px-5 md:py-2.5 bg-white/10 hover:bg-white/20 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-sm transition-colors border border-white/20">Profile</a>
+                    <button onclick="logout()" class="px-3 py-2 md:px-5 md:py-2.5 bg-[#800000] hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-sm transition-colors ml-2 md:ml-4">Logout</button>
+                `;
+            } else {
+                authContainer.innerHTML = `
+                    <a href="login.html" class="text-[10px] md:text-xs font-bold uppercase tracking-widest hover:text-[#ffcc00] transition-colors mr-3 md:mr-4">Login</a>
+                    <a href="register.html" class="px-3 py-2 md:px-5 md:py-2.5 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-sm transition-colors">Register</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.reload();
+        }
+
+        // Initialize Navbar
+        updateNavbar();
+    </script>
+</body>
+
+</html>

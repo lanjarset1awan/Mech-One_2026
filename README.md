@@ -96,7 +96,7 @@ npm install
 
 Create a `.env` file in the `Backend` directory based on the variables template below:
 ```env
-PORT=5000
+PORT=5005
 SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL
 SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
@@ -114,10 +114,10 @@ Start the development server with live reload enabled (using nodemon):
 ```bash
 npm run dev
 ```
-The server will boot up and listen on `http://localhost:5000`.
+The server will boot up and listen on `http://localhost:5005`.
 
 ### 5. Launch the Frontend
-The frontend connects automatically to `http://localhost:5000` when running locally (from `localhost` or `127.0.0.1`).
+The frontend connects automatically to `http://localhost:5005` when running locally (from `localhost` or `127.0.0.1`).
 Simply open `Frontend/index.html` in your web browser, or use a local static server like Live Server in VS Code.
 
 ---
