@@ -33,20 +33,46 @@
     </nav>
 
     <!-- Main Content Section -->
-    <main class="flex-grow flex flex-col items-center justify-center px-4 md:px-6 pt-32 pb-12">
+    <main id="main-content" class="flex-grow flex flex-col items-center justify-center px-4 md:px-6 pt-32 pb-12 opacity-0 transition-opacity duration-300">
         <div class="max-w-5xl w-full text-center mb-10">
-            <h1 class="text-3xl md:text-5xl font-black leading-tight uppercase mb-4 tracking-tight">
+            <h1 id="guidebook-title" class="text-3xl md:text-5xl font-black leading-tight uppercase mb-4 tracking-tight">
                 Event <span class="text-[#ffcc00]">Guidebooks</span>
             </h1>
-            <p class="text-slate-300 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed">
+            <p id="guidebook-desc" class="text-slate-300 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed">
                 Choose a competition category below to read and view the official guidebooks in your browser.
             </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8 md:gap-10 max-w-5xl w-full">
+        <div id="cards-container" class="grid md:grid-cols-2 gap-8 md:gap-10 max-w-5xl w-full">
+            
+            <!-- General Card -->
+            <div id="general-card" class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between shadow-2xl" style="display: none;">
+                <!-- Decorative Icon in Background -->
+                <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i class="fas fa-file-alt text-7xl text-[#ffcc00]"></i>
+                </div>
+                
+                <div>
+                    <div class="flex items-center justify-center w-14 h-14 rounded-2xl bg-[#ffcc00]/10 border border-[#ffcc00]/30 text-[#ffcc00] mb-6">
+                        <i class="fas fa-file-alt text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight">General Guideline</h2>
+                    <p class="text-[#ffcc00] font-bold text-xs tracking-[0.2em] uppercase mb-6">Mech-ONE 2026</p>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                        Read the general rules, scheduling, and general guidelines for the Mech-ONE 2026 international engineering hub and competitions.
+                    </p>
+                </div>
+                
+                <div class="mt-auto pt-6 border-t border-white/5">
+                    <a href="./assets/MDC Guidebook_General - MechONE.pdf" target="_blank"
+                        class="inline-flex items-center justify-center w-full gap-2 px-6 py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-black rounded-sm transition-transform hover:scale-[1.02] uppercase text-xs tracking-widest shadow-lg shadow-yellow-900/20">
+                        <i class="fas fa-file-pdf"></i> View General Guidebook
+                    </a>
+                </div>
+            </div>
             
             <!-- BPC Card -->
-            <div class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between shadow-2xl">
+            <div id="bpc-card" class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between shadow-2xl">
                 <!-- Decorative Icon in Background -->
                 <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                     <i class="fas fa-briefcase text-7xl text-[#ffcc00]"></i>
@@ -72,7 +98,7 @@
             </div>
 
             <!-- MDC Card -->
-            <div class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between shadow-2xl">
+            <div id="mdc-card" class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden group flex flex-col justify-between shadow-2xl">
                 <!-- Decorative Icon in Background -->
                 <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                     <i class="fas fa-microchip text-7xl text-[#00a8e8]"></i>
@@ -85,15 +111,11 @@
                     <h2 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight">Mechanical Design</h2>
                     <p class="text-[#00a8e8] font-bold text-xs tracking-[0.2em] uppercase mb-6">MDC Competition</p>
                     <p class="text-slate-400 text-sm leading-relaxed mb-8">
-                        Read the general competition guideline and the specific case study rules to design state-of-the-art mechanical systems for coastal sustainability and energy.
+                        Read the official case study rules and deliverables to design state-of-the-art mechanical systems for coastal sustainability and energy.
                     </p>
                 </div>
                 
-                <div class="mt-auto pt-6 border-t border-white/5 space-y-3">
-                    <a href="./assets/MDC Guidebook_General - MechONE.pdf" target="_blank"
-                        class="inline-flex items-center justify-center w-full gap-2 px-6 py-4 bg-[#00a8e8] hover:bg-blue-400 text-white font-bold rounded-sm transition-transform hover:scale-[1.02] uppercase text-xs tracking-widest shadow-lg shadow-blue-900/20">
-                        <i class="fas fa-file-pdf"></i> View General Guidebook
-                    </a>
+                <div class="mt-auto pt-6 border-t border-white/5">
                     <a href="./assets/MDC Guidebook_Case - MechONE.pdf" target="_blank"
                         class="inline-flex items-center justify-center w-full gap-2 px-6 py-4 bg-[#00a8e8] hover:bg-blue-400 text-white font-bold rounded-sm transition-transform hover:scale-[1.02] uppercase text-xs tracking-widest shadow-lg shadow-blue-900/20">
                         <i class="fas fa-file-pdf"></i> View Case Guidebook
@@ -104,8 +126,82 @@
         </div>
     </main>
 
+    <script src="./js/api.js"></script>
+    <script src="./js/popup.js"></script>
     <!-- Script to Handle Navbar State -->
     <script>
+        async function checkAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const requestedType = urlParams.get('type') || 'general';
+
+            if (requestedType === 'general') {
+                // Publicly accessible general guidebook
+                document.getElementById("mdc-card").style.display = "none";
+                document.getElementById("bpc-card").style.display = "none";
+                document.getElementById("general-card").style.display = "block";
+                document.getElementById("cards-container").className = "flex justify-center max-w-5xl w-full";
+                document.getElementById("guidebook-title").innerHTML = 'General <span class="text-[#ffcc00]">Guidebook</span>';
+                document.getElementById("guidebook-desc").innerText = 'Read and view the official general rules and guidelines for Mech-ONE 2026.';
+                
+                const mainContent = document.getElementById("main-content");
+                if (mainContent) {
+                    mainContent.classList.remove("opacity-0");
+                }
+                return;
+            }
+
+            // MDC or BPC require login and registration checks
+            if (requestedType !== 'MDC' && requestedType !== 'BPC') {
+                await showPopup("⚠️ Akses Ditolak!\n\nTipe guidebook tidak valid.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            const token = localStorage.getItem("token");
+            if (!token) {
+                await showPopup("Please login first to access the guidebook.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const res = await getRegistrationStatus(token);
+                if (res && res.registered) {
+                    if (res.type !== requestedType) {
+                        await showPopup(`⚠️ Akses Ditolak!\n\nAnda tidak terdaftar untuk kompetisi ${requestedType}.`);
+                        window.location.href = "index.html";
+                        return;
+                    }
+
+                    // Hide the non-matching cards and update title/description
+                    document.getElementById("general-card").style.display = "none";
+                    if (requestedType === 'MDC') {
+                        document.getElementById("bpc-card").style.display = "none";
+                        document.getElementById("cards-container").className = "flex justify-center max-w-5xl w-full";
+                        document.getElementById("guidebook-title").innerHTML = 'MDC <span class="text-[#ffcc00]">Guidebook</span>';
+                        document.getElementById("guidebook-desc").innerText = 'Read and view the official Mechanical Design competition guidebooks.';
+                    } else if (requestedType === 'BPC') {
+                        document.getElementById("mdc-card").style.display = "none";
+                        document.getElementById("cards-container").className = "flex justify-center max-w-5xl w-full";
+                        document.getElementById("guidebook-title").innerHTML = 'BPC <span class="text-[#ffcc00]">Guidebook</span>';
+                        document.getElementById("guidebook-desc").innerText = 'Read and view the official Business Plan competition guidebooks.';
+                    }
+
+                    const mainContent = document.getElementById("main-content");
+                    if (mainContent) {
+                        mainContent.classList.remove("opacity-0");
+                    }
+                } else {
+                    await showPopup("⚠️ Akses Ditolak!\n\nAnda harus menyelesaikan pendaftaran kompetisi terlebih dahulu untuk mengakses guidebook.");
+                    window.location.href = "index.html";
+                }
+            } catch (e) {
+                console.error(e);
+                await showPopup("Gagal memverifikasi status pendaftaran.");
+                window.location.href = "index.html";
+            }
+        }
+
         function updateNavbar() {
             const token = localStorage.getItem("token");
             const authContainer = document.getElementById("auth-buttons");
@@ -128,7 +224,8 @@
             window.location.reload();
         }
 
-        // Initialize Navbar
+        // Initialize
+        checkAccess();
         updateNavbar();
     </script>
 </body>

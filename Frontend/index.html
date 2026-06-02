@@ -82,7 +82,7 @@
                     class="px-6 py-3 md:px-10 md:py-4 bg-[#ffcc00] text-[#0a1d37] font-black rounded-sm hover:scale-105 transition-transform uppercase text-sm shadow-lg shadow-yellow-900/20">
                     Register Account
                 </button>
-                <button onclick="window.location.href='guidebook.html'"
+                <button onclick="window.location.href='guidebook.html?type=general'"
                     class="px-6 py-3 md:px-10 md:py-4 border-2 border-white/20 hover:bg-white/10 font-bold rounded-sm transition-all uppercase text-sm">
                     Guidebook
                 </button>
@@ -748,37 +748,53 @@
 
                     let statusHtml = '';
                     if (res.status === 'approved') {
-                        statusHtml = `<div class="px-8 py-3 bg-green-500/10 text-green-400 font-bold rounded-sm uppercase text-xs tracking-widest w-fit border border-green-500/40 flex items-center gap-2">
+                        statusHtml = `<div class="w-full px-6 py-3 bg-green-500/10 text-green-400 font-bold rounded-sm uppercase text-xs tracking-widest border border-green-500/40 flex items-center justify-center gap-2">
                             <i class="fas fa-check-circle text-green-500"></i> Registration Approved
                         </div>`;
                     } else if (res.status === 'rejected') {
-                        statusHtml = `<div class="px-8 py-3 bg-red-500/10 text-red-400 font-bold rounded-sm uppercase text-xs tracking-widest w-fit border border-red-500/40 flex items-center gap-2">
+                        statusHtml = `<div class="w-full px-6 py-3 bg-red-500/10 text-red-400 font-bold rounded-sm uppercase text-xs tracking-widest border border-red-500/40 flex items-center justify-center gap-2">
                             <i class="fas fa-times-circle text-red-500"></i> Registration Rejected
                         </div>`;
                     } else {
-                        statusHtml = `<div class="px-8 py-3 bg-white/10 text-gray-400 font-bold rounded-sm uppercase text-xs tracking-widest w-fit border border-white/20 flex items-center gap-2">
+                        statusHtml = `<div class="w-full px-6 py-3 bg-white/5 text-gray-300 font-bold rounded-sm uppercase text-xs tracking-widest border border-white/10 flex items-center justify-center gap-2">
                             <i class="fas fa-clock text-yellow-400"></i> Registration Processed
                         </div>`;
                     }
 
                     let submissionBtnHtml = '';
+                    let guidebookBtnHtml = '';
                     if (res.type !== 'SEM') {
-                        const btnText = res.registrations ? 'Update Proposal' : 'Submission';
+                        const btnText = res.registrations ? 'Update Proposal' : 'Submit Proposal';
                         const btnStyle = res.registrations 
                             ? 'border-green-500 text-green-400 hover:bg-green-500 hover:text-white' 
                             : 'border-white text-white hover:bg-white hover:text-black';
                         submissionBtnHtml = `<a href="submit-proposal.html" 
-                            class="px-6 py-2.5 border-2 ${btnStyle} font-bold rounded-full transition-all uppercase text-[10px] md:text-xs tracking-widest text-center inline-block">
-                            ${btnText}
+                            class="w-full px-6 py-3 border-2 ${btnStyle} font-bold rounded-sm transition-transform hover:scale-[1.02] uppercase text-xs tracking-widest flex items-center justify-center gap-2">
+                            <i class="fas fa-upload"></i> ${btnText}
+                        </a>`;
+                        
+                        const gbtnColor = res.type === 'MDC' 
+                            ? 'bg-[#00a8e8] hover:bg-blue-400 text-white shadow-blue-900/20' 
+                            : 'bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] shadow-yellow-900/20';
+  
+                        guidebookBtnHtml = `<a href="guidebook.html?type=${res.type}" 
+                            class="w-full px-6 py-3 ${gbtnColor} font-black rounded-sm transition-transform hover:scale-[1.02] uppercase text-xs tracking-widest shadow-lg flex items-center justify-center gap-2">
+                            <i class="fas fa-book-open"></i> Download Guidebook
                         </a>`;
                     }
 
                     if (res.type === 'MDC') {
-                        if (actionsMdc) actionsMdc.innerHTML = statusHtml + submissionBtnHtml;
+                        if (actionsMdc) {
+                            actionsMdc.className = "flex flex-col gap-3 mt-auto w-full items-stretch";
+                            actionsMdc.innerHTML = statusHtml + guidebookBtnHtml + submissionBtnHtml;
+                        }
                         if (actionsBpc) actionsBpc.innerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for MDC.</div>`;
                         if (btnSem) btnSem.outerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for MDC.</div>`;
                     } else if (res.type === 'BPC') {
-                        if (actionsBpc) actionsBpc.innerHTML = statusHtml + submissionBtnHtml;
+                        if (actionsBpc) {
+                            actionsBpc.className = "flex flex-col gap-3 mt-auto w-full items-stretch";
+                            actionsBpc.innerHTML = statusHtml + guidebookBtnHtml + submissionBtnHtml;
+                        }
                         if (actionsMdc) actionsMdc.innerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for BPC.</div>`;
                         if (btnSem) btnSem.outerHTML = `<div class="mt-auto text-xs text-gray-500 italic">You have registered for BPC.</div>`;
                     } else if (res.type === 'SEM') {
