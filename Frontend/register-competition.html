@@ -289,10 +289,15 @@
                 const res = await registerCompetition(formData, token);
                 
                 if (res.error) {
-                    await showPopup("Registrasi gagal: " + res.error);
+                    await showPopup("Registration failed: " + res.error);
                 } else {
-                    await showPopup("Registrasi sukses", false);
-                    window.location.href = "index.html"; // Redirect to home after success
+                    if (currentCompType === 'MDC' || currentCompType === 'BPC') {
+                        await showPopup(`Registration successful! Please download the guidebook for ${currentCompType} Competition.`, false);
+                        window.location.href = `guidebook.html?type=${currentCompType}`;
+                    } else {
+                        await showPopup("Registration successful!", false);
+                        window.location.href = "index.html"; // Redirect to home after success
+                    }
                 }
             } catch (err) {
                 await showPopup("Terjadi kesalahan sistem saat registrasi kompetisi: " + err.message);
