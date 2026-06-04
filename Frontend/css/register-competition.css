@@ -76,8 +76,8 @@ h1, h2, h3, .font-heading {
 }
 
 .file-upload-label:hover {
-    border-color: var(--ffcc00);
-    background: rgba(255, 204, 0, 0.1);
+    border-color: var(--light-blue);
+    background: rgba(0, 168, 232, 0.1);
 }
 
 input[type="file"] {
