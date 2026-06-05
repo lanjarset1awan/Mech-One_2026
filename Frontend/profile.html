@@ -26,22 +26,26 @@
                 My Profile
             </div>
             <div class="flex items-center shrink-0">
-                <button onclick="logout()" class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <button onclick="logout()"
+                    class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors"><i
+                        class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-4 mt-10 grid md:grid-cols-3 gap-8">
-        
+
         <!-- Left Column: User Info -->
         <div class="md:col-span-1 space-y-6">
             <div class="glass-panel p-6">
                 <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
                     <h3 class="text-lg font-bold uppercase tracking-widest text-[#ffcc00]">Personal Info</h3>
-                    <button onclick="toggleEdit()" class="text-xs text-[#00a8e8] hover:text-white uppercase tracking-widest font-bold"><i class="fas fa-edit"></i> Edit</button>
+                    <button onclick="toggleEdit()"
+                        class="text-xs text-[#00a8e8] hover:text-white uppercase tracking-widest font-bold"><i
+                            class="fas fa-edit"></i> Edit</button>
                 </div>
-                
+
                 <div id="info-display" class="space-y-4">
                     <div>
                         <p class="text-xs text-gray-400">Full Name</p>
@@ -90,7 +94,9 @@
                         <label class="text-xs text-gray-400">Whatsapp Number</label>
                         <input id="input-wa" type="text" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
                     </div>
-                    <button id="saveInfoBtn" class="w-full mt-2 py-2 bg-[#00a8e8] text-white text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-blue-500">Save Changes</button>
+                    <button id="saveInfoBtn"
+                        class="w-full mt-2 py-2 bg-[#00a8e8] text-white text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-blue-500">Save
+                        Changes</button>
                 </div>
             </div>
         </div>
@@ -109,10 +115,11 @@
                     <!-- Dynamically populated via JS -->
                     <div class="text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-gray-500"></i></div>
                 </div>
-                
+
                 <!-- Batch Upload Form for any new files -->
                 <form id="uploadForm" class="mt-8 pt-6 border-t border-white/10 hidden">
-                    <button type="submit" id="uploadBtn" class="w-full py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-bold rounded-sm transition-colors uppercase text-sm tracking-widest shadow-lg shadow-yellow-900/30">
+                    <button type="submit" id="uploadBtn"
+                        class="w-full py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-bold rounded-sm transition-colors uppercase text-sm tracking-widest shadow-lg shadow-yellow-900/30">
                         Upload Selected Files
                     </button>
                 </form>
@@ -142,7 +149,7 @@
             { id: 'student_card_url', label: 'Student ID Card' },
             { id: 'instagram_story_url', label: 'Proof of Instagram Story' },
             { id: 'twibbon_url', label: 'Proof of Twibbon' },
-            { id: 'instagram_follow_url', label: 'Proof of Following Social Media (Instagram, LinkedIn, TikTok)' },
+            { id: 'instagram_follow_url', label: 'Proof of Following Social Media (Instagram, LinkedIn)' },
             { id: 'repost_instagram_url', label: 'Proof of Repost Competition Instagram' }
         ];
 
@@ -152,7 +159,7 @@
         async function loadProfile() {
             try {
                 const user = await getProfile(token);
-                
+
                 // Populate Texts
                 document.getElementById('disp-name').innerText = user.full_name || '-';
                 document.getElementById('disp-major').innerText = user.major || '-';
@@ -170,12 +177,12 @@
                 // Render Documents
                 const docContainer = document.getElementById('documents-list');
                 docContainer.innerHTML = '';
-                
+
                 requiredDocs.forEach(doc => {
                     const url = user[doc.id];
                     const div = document.createElement('div');
                     div.className = 'doc-item';
-                    
+
                     const uploadInputHtml = `
                         <label for="${doc.id}" class="file-label px-5 py-2 md:py-2 bg-[#00a8e8]/20 hover:bg-[#00a8e8]/40 text-[#00a8e8] text-xs font-bold uppercase tracking-widest rounded-sm transition-colors flex items-center justify-center gap-2 border border-[#00a8e8]/50 w-full md:w-auto mt-2 md:mt-0 cursor-pointer">
                             <i class="fas fa-upload"></i> <span id="label-${doc.id}">${url ? 'Change File' : 'Select File'}</span>
@@ -210,12 +217,12 @@
             }
         }
 
-        window.handleFileSelect = async function(docId) {
+        window.handleFileSelect = async function (docId) {
             const input = document.getElementById(docId);
             const labelSpan = document.getElementById(`label-${docId}`);
-            if(input.files.length > 0) {
+            if (input.files.length > 0) {
                 const file = input.files[0];
-                
+
                 if (file.size > 300 * 1024) {
                     await showPopup("Ukuran file maksimal 300 KB!");
                     input.value = "";
@@ -225,7 +232,7 @@
                 labelSpan.parentElement.classList.replace('bg-[#00a8e8]/20', 'bg-green-500/20');
                 labelSpan.parentElement.classList.replace('text-[#00a8e8]', 'text-green-400');
                 labelSpan.parentElement.classList.replace('border-[#00a8e8]/50', 'border-green-500/50');
-                
+
                 pendingFiles.set(docId, file);
                 hasPendingFiles = true;
                 document.getElementById('uploadForm').classList.remove('hidden');
@@ -234,7 +241,7 @@
 
         document.getElementById('uploadForm').onsubmit = async (e) => {
             e.preventDefault();
-            if(!hasPendingFiles) return;
+            if (!hasPendingFiles) return;
 
             const btn = document.getElementById("uploadBtn");
             const orig = btn.innerHTML;
@@ -261,7 +268,7 @@
             const btn = document.getElementById('saveInfoBtn');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             btn.disabled = true;
-            
+
             const data = {
                 major: document.getElementById('input-major').value,
                 gender: document.getElementById('input-gender').value,
@@ -271,10 +278,10 @@
 
             try {
                 const res = await updateProfile(data, token);
-                if(res.error) throw new Error(res.error);
+                if (res.error) throw new Error(res.error);
                 toggleEdit();
                 loadProfile();
-            } catch(e) {
+            } catch (e) {
                 await showPopup("Failed to update profile.");
             } finally {
                 btn.innerHTML = 'Save Changes';
@@ -286,4 +293,5 @@
         loadProfile();
     </script>
 </body>
+
 </html>

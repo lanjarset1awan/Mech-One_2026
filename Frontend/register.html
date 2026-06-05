@@ -53,7 +53,12 @@
                 
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Password</label>
-                    <input id="password" type="password" placeholder="••••••••" class="input-field w-full px-4 py-3 rounded-sm text-sm" />
+                    <div class="relative">
+                        <input id="password" type="password" placeholder="••••••••" class="input-field w-full px-4 py-3 pr-10 rounded-sm text-sm" />
+                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white focus:outline-none">
+                            <i id="eyeIcon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <button type="submit" id="registerBtn" class="w-full mt-4 px-6 py-3 md:py-4 bg-[#ffcc00] hover:bg-yellow-400 text-[#0a1d37] font-bold rounded-sm transition-colors uppercase text-sm tracking-widest shadow-lg shadow-yellow-900/30">
@@ -70,6 +75,17 @@
     <script src="./js/api.js"></script>
     <script src="./js/popup.js"></script>
     <script>
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon");
+
+        togglePassword.addEventListener("click", () => {
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type);
+            eyeIcon.classList.toggle("fa-eye");
+            eyeIcon.classList.toggle("fa-eye-slash");
+        });
+
         document.getElementById("registerForm").onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById("registerBtn");
