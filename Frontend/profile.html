@@ -56,6 +56,10 @@
                         <p id="disp-major" class="font-semibold">...</p>
                     </div>
                     <div>
+                        <p class="text-xs text-gray-400">University / Institution</p>
+                        <p id="disp-university" class="font-semibold">...</p>
+                    </div>
+                    <div>
                         <p class="text-xs text-gray-400">Gender</p>
                         <p id="disp-gender" class="font-semibold">...</p>
                     </div>
@@ -78,6 +82,10 @@
                     <div>
                         <label class="text-xs text-gray-400">Major</label>
                         <input id="input-major" type="text" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400">University / Institution</label>
+                        <input id="input-university" type="text" class="input-field w-full px-3 py-2 rounded-sm text-sm" />
                     </div>
                     <div>
                         <label class="text-xs text-gray-400">Gender</label>
@@ -163,6 +171,7 @@
                 // Populate Texts
                 document.getElementById('disp-name').innerText = user.full_name || '-';
                 document.getElementById('disp-major').innerText = user.major || '-';
+                document.getElementById('disp-university').innerText = user.university || '-';
                 document.getElementById('disp-gender').innerText = user.gender || '-';
                 document.getElementById('disp-batch').innerText = user.batch || '-';
                 document.getElementById('disp-email').innerText = user.email || '-';
@@ -170,6 +179,7 @@
 
                 // Populate Edit Form
                 document.getElementById('input-major').value = user.major || '';
+                document.getElementById('input-university').value = user.university || '';
                 document.getElementById('input-gender').value = user.gender || 'Male';
                 document.getElementById('input-batch').value = user.batch || '';
                 document.getElementById('input-wa').value = user.whatsapp_number || '';
@@ -271,6 +281,7 @@
 
             const data = {
                 major: document.getElementById('input-major').value,
+                university: document.getElementById('input-university').value,
                 gender: document.getElementById('input-gender').value,
                 batch: document.getElementById('input-batch').value,
                 whatsapp_number: document.getElementById('input-wa').value,

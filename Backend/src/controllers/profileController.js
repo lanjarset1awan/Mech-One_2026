@@ -18,11 +18,11 @@ export const getProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     const userId = req.user.id;
-    const { major, gender, batch, whatsapp_number } = req.body;
+    const { major, gender, batch, whatsapp_number, university } = req.body;
     try {
         const { data, error } = await supabase
             .from("users")
-            .update({ major, gender, batch, whatsapp_number })
+            .update({ major, gender, batch, whatsapp_number, university })
             .eq("id", userId)
             .select()
             .single();
