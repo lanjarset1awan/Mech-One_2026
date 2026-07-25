@@ -50,18 +50,18 @@
 
                 <!-- File upload dropzone -->
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Proposal File (PDF, Max 500KB)</label>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Proposal File (PDF, ZIP, RAR - Max 5MB)</label>
                     <label class="file-upload-label h-28 flex flex-col text-center" for="proposal-file" id="dropzone">
-                        <i class="fas fa-file-pdf text-3xl text-yellow-400 mb-2"></i>
-                        <span id="dropzone-text" class="text-xs text-gray-300">Click to select PDF file</span>
+                        <i class="fas fa-cloud-upload-alt text-3xl text-yellow-400 mb-2"></i>
+                        <span id="dropzone-text" class="text-xs text-gray-300">Click to select PDF, ZIP, or RAR file</span>
                     </label>
-                    <input id="proposal-file" type="file" accept="application/pdf" onchange="handleProposalFileChange(event)" />
+                    <input id="proposal-file" type="file" accept=".pdf,.zip,.rar,.7z" onchange="handleProposalFileChange(event)" />
                 </div>
 
-                <!-- PDF Preview Container -->
+                <!-- Preview Container -->
                 <div id="pdf-preview-container" class="hidden space-y-3">
                     <div class="flex items-center gap-3 bg-white/5 border border-white/10 p-3 rounded-sm">
-                        <i class="fas fa-file-pdf text-2xl text-[#00a8e8]"></i>
+                        <i id="preview-file-icon" class="fas fa-file-alt text-2xl text-[#00a8e8]"></i>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm text-white font-semibold truncate" id="preview-filename">proposal.pdf</p>
                             <p class="text-xs text-slate-400" id="preview-filesize">0 KB</p>
@@ -71,8 +71,8 @@
                         </button>
                     </div>
                     
-                    <!-- PDF Live Preview frame -->
-                    <div class="rounded-sm overflow-hidden border border-white/10 h-64 w-full bg-slate-900 relative">
+                    <!-- PDF Live Preview frame (shown only for PDF files) -->
+                    <div id="iframe-preview-box" class="rounded-sm overflow-hidden border border-white/10 h-64 w-full bg-slate-900 relative hidden">
                         <iframe id="pdf-preview-iframe" class="w-full h-full" src=""></iframe>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     document.getElementById("form-heading").innerText = "Update Proposal";
                     document.getElementById("submit-btn").innerText = "Update Proposal";
                     document.getElementById("proposal-title").value = res.proposal_title || "";
-                    document.getElementById("dropzone-text").innerText = "Replace PDF file";
+                    document.getElementById("dropzone-text").innerText = "Replace proposal file";
                 }
             } catch (err) {
                 console.error(err);
@@ -131,14 +131,17 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            if (file.type !== "application/pdf") {
-                showPopup("Format berkas harus PDF!");
+            const ext = file.name.split('.').pop().toLowerCase();
+            const allowedExts = ['pdf', 'zip', 'rar', '7z'];
+
+            if (!allowedExts.includes(ext)) {
+                showPopup("Format berkas tidak didukung! Format yang diperbolehkan: PDF, ZIP, RAR.");
                 event.target.value = "";
                 return;
             }
 
-            if (file.size > 500 * 1024) {
-                showPopup("Ukuran file maksimal 500 KB!");
+            if (file.size > 5 * 1024 * 1024) { // 5 MB
+                showPopup("Ukuran file maksimal 5 MB!");
                 event.target.value = "";
                 return;
             }
@@ -146,10 +149,27 @@
             selectedFile = file;
             
             document.getElementById("preview-filename").innerText = file.name;
-            document.getElementById("preview-filesize").innerText = (file.size / 1024).toFixed(1) + " KB";
+            const fileSizeStr = file.size > 1024 * 1024 
+                ? (file.size / (1024 * 1024)).toFixed(2) + " MB"
+                : (file.size / 1024).toFixed(1) + " KB";
+            document.getElementById("preview-filesize").innerText = fileSizeStr;
+
+            // Set appropriate icon
+            const iconElem = document.getElementById("preview-file-icon");
+            const iframeBox = document.getElementById("iframe-preview-box");
             
-            const fileURL = URL.createObjectURL(file);
-            document.getElementById("pdf-preview-iframe").src = fileURL;
+            if (ext === 'pdf') {
+                iconElem.className = "fas fa-file-pdf text-2xl text-[#00a8e8]";
+                const fileURL = URL.createObjectURL(file);
+                document.getElementById("pdf-preview-iframe").src = fileURL;
+                iframeBox.classList.remove("hidden");
+            } else if (['zip', 'rar', '7z'].includes(ext)) {
+                iconElem.className = "fas fa-file-archive text-2xl text-yellow-400";
+                iframeBox.classList.add("hidden");
+            } else {
+                iconElem.className = "fas fa-file-alt text-2xl text-gray-400";
+                iframeBox.classList.add("hidden");
+            }
 
             document.getElementById("dropzone").classList.add("hidden");
             document.getElementById("pdf-preview-container").classList.remove("hidden");
@@ -168,11 +188,12 @@
 
             document.getElementById("dropzone").classList.remove("hidden");
             document.getElementById("pdf-preview-container").classList.add("hidden");
+            document.getElementById("iframe-preview-box").classList.add("hidden");
             
             if (isUpdate) {
-                document.getElementById("dropzone-text").innerText = "Replace PDF file";
+                document.getElementById("dropzone-text").innerText = "Replace proposal file";
             } else {
-                document.getElementById("dropzone-text").innerText = "Click to select PDF file";
+                document.getElementById("dropzone-text").innerText = "Click to select PDF, ZIP, or RAR file";
             }
         }
 
@@ -185,7 +206,7 @@
             }
 
             if (!selectedFile) {
-                await showPopup("Silakan pilih berkas PDF proposal terlebih dahulu.");
+                await showPopup("Silakan pilih berkas proposal terlebih dahulu.");
                 return;
             }
 

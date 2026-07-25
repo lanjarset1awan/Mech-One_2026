@@ -163,16 +163,18 @@ export const uploadProposal = async (req, res) => {
             return res.status(400).json({ error: "No file uploaded." });
         }
 
-        if (file.mimetype !== "application/pdf") {
-            return res.status(400).json({ error: "Only PDF files are allowed!" });
-        }
-
-        if (file.size > 500 * 1024) { // 500 KB
-            return res.status(400).json({ error: "Proposal size must not exceed 500 KB." });
-        }
-
         const originalName = file.originalname || "proposal.pdf";
-        const fileExt = originalName.split(".").pop();
+        const fileExt = originalName.split(".").pop().toLowerCase();
+        const allowedExts = ["pdf", "zip", "rar", "7z"];
+
+        if (!allowedExts.includes(fileExt)) {
+            return res.status(400).json({ error: "Format berkas tidak didukung! Format yang diperbolehkan: PDF, ZIP, RAR." });
+        }
+
+        if (file.size > 5 * 1024 * 1024) { // 5 MB
+            return res.status(400).json({ error: "Ukuran file proposal maksimal 5 MB." });
+        }
+
         const uniqueName = `proposal_${Date.now()}.${fileExt}`;
         const filePath = `${userId}/${uniqueName}`;
 
