@@ -38,7 +38,7 @@
                 <i class="fas fa-trophy text-6xl md:text-7xl text-[#ffcc00]"></i>
             </div>
             
-            <h2 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight relative z-10">Team Registration</h2>
+            <h2 id="form-heading" class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight relative z-10">Team Registration</h2>
             <p class="text-slate-400 text-sm mb-8 relative z-10">Register your team for <span id="comp-name" class="text-[#ffcc00] font-bold">...</span></p>
 
             <div id="form-grid" class="grid md:grid-cols-2 gap-10 relative z-10">
@@ -151,17 +151,12 @@
             document.getElementById("comp-name").innerText = 'Mechanical Design (MDC)';
         }
 
-        // Validate Profile before allowing registration
+        let isUpdateMode = false;
+
+        // Validate Profile before allowing registration or load existing data for edit
         async function validateProfile() {
             try {
-                // Check if already registered first
-                const regStatus = await getRegistrationStatus(token);
-                if (regStatus && regStatus.registered) {
-                    await showPopup("⚠️ Akses Ditolak!\n\nAnda sudah terdaftar di kompetisi " + regStatus.type + ". Tidak bisa mendaftar lagi.");
-                    window.location.href = "index.html";
-                    return;
-                }
-
+                // Check if user has completed profile
                 const user = await getProfile(token);
                 if (user.error) throw new Error();
                 
@@ -178,9 +173,49 @@
                 if (!isComplete) {
                     await showPopup("⚠️ Access Denied!\n\nYou must complete your profile and upload ALL required documents before registering for a competition.");
                     window.location.href = "profile.html";
+                    return;
+                }
+
+                // Check registration status
+                const regStatus = await getRegistrationStatus(token);
+                if (regStatus && regStatus.registered) {
+                    isUpdateMode = true;
+                    // Pre-fill existing data for editing
+                    const headingElem = document.getElementById("form-heading");
+                    if (headingElem) {
+                        headingElem.innerText = compType === 'SEM' ? "Edit Participant Info" : "Edit Team Registration";
+                    }
+                    const submitBtn = document.getElementById("submit");
+                    if (submitBtn) {
+                        submitBtn.innerText = "Update Registration";
+                    }
+                    
+                    if (document.getElementById("team")) document.getElementById("team").value = regStatus.team_name || "";
+                    if (document.getElementById("univ")) document.getElementById("univ").value = regStatus.university || "";
+                    if (document.getElementById("m1")) document.getElementById("m1").value = regStatus.member_1 || "";
+                    if (document.getElementById("m2")) document.getElementById("m2").value = regStatus.member_2 || "";
+                    if (document.getElementById("m3")) document.getElementById("m3").value = regStatus.member_3 || "";
+                    if (document.getElementById("m4")) document.getElementById("m4").value = regStatus.member_4 || "";
+                    if (document.getElementById("m5")) document.getElementById("m5").value = regStatus.member_5 || "";
+
+                    if (regStatus.payment_proof_url) {
+                        const display = document.getElementById("payment-proof-name");
+                        if (display) {
+                            display.innerText = "Payment proof uploaded (Click to replace)";
+                            display.classList.add("text-white");
+                            display.classList.remove("text-gray-300");
+                        }
+                        const previewImg = document.getElementById("payment-proof-preview");
+                        const previewContainer = document.getElementById("payment-proof-preview-container");
+                        if (previewImg && previewContainer) {
+                            previewImg.src = regStatus.payment_proof_url;
+                            previewContainer.classList.remove("hidden");
+                        }
+                    }
                 }
             } catch (err) {
-                await showPopup("Failed to verify profile status.");
+                console.error("validateProfile error:", err);
+                await showPopup("Failed to verify profile status: " + err.message);
                 window.location.href = "profile.html";
             }
         }
@@ -197,7 +232,7 @@
                 if (file.size > MAX_SIZE) {
                     await showPopup("Ukuran file maksimal 500 KB!");
                     input.value = "";
-                    display.innerText = "Click to upload payment proof";
+                    display.innerText = isUpdateMode ? "Payment proof uploaded (Click to replace)" : "Click to upload payment proof";
                     display.classList.remove("text-white");
                     display.classList.add("text-gray-300");
                     previewContainer.classList.add("hidden");
@@ -207,7 +242,7 @@
                 if (!file.type.startsWith("image/")) {
                     await showPopup("Format file harus gambar (JPG, PNG)!");
                     input.value = "";
-                    display.innerText = "Click to upload payment proof";
+                    display.innerText = isUpdateMode ? "Payment proof uploaded (Click to replace)" : "Click to upload payment proof";
                     display.classList.remove("text-white");
                     display.classList.add("text-gray-300");
                     previewContainer.classList.add("hidden");
@@ -226,16 +261,17 @@
                 }
                 reader.readAsDataURL(file);
             } else {
-                display.innerText = "Click to upload payment proof";
-                display.classList.remove("text-white");
-                display.classList.add("text-gray-300");
+                display.innerText = isUpdateMode ? "Payment proof uploaded (Click to replace)" : "Click to upload payment proof";
+                if (!isUpdateMode) {
+                    display.classList.remove("text-white");
+                    display.classList.add("text-gray-300");
+                }
                 previewContainer.classList.add("hidden");
                 previewImg.src = "";
             }
         }
 
         validateProfile();
-
 
     </script>
 
@@ -245,15 +281,16 @@
             const btn = document.getElementById("submit");
             const originalText = btn.innerHTML;
 
-            // Set the competition type dynamically based on URL parameter
             const urlParams = new URLSearchParams(window.location.search);
             let currentCompType = urlParams.get('type') || 'MDC';
 
-            const team = document.getElementById("team").value;
-            const univ = document.getElementById("univ").value;
-            const m1 = currentCompType === 'SEM' ? team : document.getElementById("m1").value;
-            const m2 = document.getElementById("m2").value;
-            const m3 = document.getElementById("m3").value;
+            const team = document.getElementById("team").value.trim();
+            const univ = document.getElementById("univ").value.trim();
+            const m1 = currentCompType === 'SEM' ? team : document.getElementById("m1").value.trim();
+            const m2 = document.getElementById("m2") ? document.getElementById("m2").value.trim() : "";
+            const m3 = document.getElementById("m3") ? document.getElementById("m3").value.trim() : "";
+            const m4 = document.getElementById("m4") ? document.getElementById("m4").value.trim() : "";
+            const m5 = document.getElementById("m5") ? document.getElementById("m5").value.trim() : "";
             const paymentProofFile = document.getElementById("payment-proof").files[0];
 
             if (currentCompType === 'SEM') {
@@ -262,9 +299,16 @@
                     return;
                 }
             } else {
-                if (!team || !univ || !m1 || !m2 || !m3 || !paymentProofFile) {
-                    await showPopup("Please fill in the Team Name, University, Leader Name, Member 2, Member 3, and upload your payment proof.");
-                    return;
+                if (!isUpdateMode && !paymentProofFile) {
+                    if (!team || !univ || !m1 || !m2 || !m3 || !paymentProofFile) {
+                        await showPopup("Please fill in the Team Name, University, Leader Name, Member 2, Member 3, and upload your payment proof.");
+                        return;
+                    }
+                } else {
+                    if (!team || !univ || !m1 || !m2 || !m3) {
+                        await showPopup("Please fill in the Team Name, University, Leader Name, Member 2, and Member 3.");
+                        return;
+                    }
                 }
             }
 
@@ -279,28 +323,38 @@
                 formData.append("member_1", m1);
                 formData.append("member_2", currentCompType === 'SEM' ? "" : m2);
                 formData.append("member_3", currentCompType === 'SEM' ? "" : m3);
-                formData.append("member_4", (currentCompType === 'BPC' || currentCompType === 'SEM') ? "" : document.getElementById("m4").value);
-                formData.append("member_5", (currentCompType === 'BPC' || currentCompType === 'SEM') ? "" : document.getElementById("m5").value);
+                formData.append("member_4", (currentCompType === 'BPC' || currentCompType === 'SEM') ? "" : m4);
+                formData.append("member_5", (currentCompType === 'BPC' || currentCompType === 'SEM') ? "" : m5);
                 
-                if (currentCompType !== 'SEM') {
+                if (paymentProofFile) {
                     formData.append("file", paymentProofFile);
                 }
 
-                const res = await registerCompetition(formData, token);
+                let res;
+                if (isUpdateMode) {
+                    res = await updateRegistrationCompetition(formData, token);
+                } else {
+                    res = await registerCompetition(formData, token);
+                }
                 
                 if (res.error) {
-                    await showPopup("Registration failed: " + res.error);
+                    await showPopup((isUpdateMode ? "Update failed: " : "Registration failed: ") + res.error);
                 } else {
-                    if (currentCompType === 'MDC' || currentCompType === 'BPC') {
-                        await showPopup(`Registration successful! Please download the guidebook for ${currentCompType} Competition.`, false);
-                        window.location.href = `guidebook.html?type=${currentCompType}`;
+                    if (isUpdateMode) {
+                        await showPopup("Data pendaftaran berhasil diperbarui!", false);
+                        window.location.href = "index.html";
                     } else {
-                        await showPopup("Registration successful!", false);
-                        window.location.href = "index.html"; // Redirect to home after success
+                        if (currentCompType === 'MDC' || currentCompType === 'BPC') {
+                            await showPopup(`Registration successful! Please download the guidebook for ${currentCompType} Competition.`, false);
+                            window.location.href = `guidebook.html?type=${currentCompType}`;
+                        } else {
+                            await showPopup("Registration successful!", false);
+                            window.location.href = "index.html";
+                        }
                     }
                 }
             } catch (err) {
-                await showPopup("Terjadi kesalahan sistem saat registrasi kompetisi: " + err.message);
+                await showPopup("Terjadi kesalahan sistem saat memproses registrasi: " + err.message);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;

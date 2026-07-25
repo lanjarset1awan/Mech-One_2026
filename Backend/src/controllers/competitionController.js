@@ -110,7 +110,7 @@ export const checkRegistrationStatus = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from("registrations")
-            .select("status, competition_type, registrations, proposal_title")
+            .select("status, competition_type, registrations, proposal_title, team_name, university, member_1, member_2, member_3, member_4, member_5, payment_proof_url")
             .eq("user_id", userId)
             .single();
 
@@ -122,13 +122,123 @@ export const checkRegistrationStatus = async (req, res) => {
             return res.json({ registered: false });
         }
 
+        let paymentProofFullUrl = data.payment_proof_url;
+        if (paymentProofFullUrl && !paymentProofFullUrl.startsWith("http")) {
+            const { data: publicUrlData } = supabase.storage
+                .from("payment")
+                .getPublicUrl(paymentProofFullUrl);
+            paymentProofFullUrl = publicUrlData ? publicUrlData.publicUrl : paymentProofFullUrl;
+        }
+
         res.json({ 
             registered: true, 
             status: data.status, 
             type: data.competition_type,
             registrations: data.registrations,
-            proposal_title: data.proposal_title
+            proposal_title: data.proposal_title,
+            team_name: data.team_name,
+            university: data.university,
+            member_1: data.member_1,
+            member_2: data.member_2,
+            member_3: data.member_3,
+            member_4: data.member_4,
+            member_5: data.member_5,
+            payment_proof_url: paymentProofFullUrl
         });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export const updateRegistration = async (req, res) => {
+    const userId = req.user.id;
+
+    const {
+        team_name,
+        university,
+        member_1,
+        member_2,
+        member_3,
+        member_4,
+        member_5,
+        competition_type,
+    } = req.body;
+
+    try {
+        const { data: existing, error: fetchErr } = await supabase
+            .from("registrations")
+            .select("*")
+            .eq("user_id", userId)
+            .single();
+
+        if (fetchErr || !existing) {
+            return res.status(400).json({ error: "Anda belum terdaftar di kompetisi apa pun." });
+        }
+
+        const currentCompType = existing.competition_type || competition_type;
+
+        if (currentCompType === "SEM") {
+            if (!team_name || !university || !member_1) {
+                return res.status(400).json({ error: "Nama Lengkap, Perguruan Tinggi, dan Nama Peserta wajib diisi." });
+            }
+        } else {
+            if (!team_name || !university || !member_1 || !member_2 || !member_3) {
+                return res.status(400).json({ error: "Nama Tim, Perguruan Tinggi, Ketua, Anggota 2, dan Anggota 3 wajib diisi." });
+            }
+        }
+
+        let paymentProofPath = existing.payment_proof_url;
+        const file = req.file;
+
+        if (file) {
+            if (!file.mimetype.startsWith("image/")) {
+                return res.status(400).json({ error: "Format file bukti pembayaran harus gambar (JPG, PNG)!" });
+            }
+            if (file.size > 500 * 1024) {
+                return res.status(400).json({ error: "Ukuran file bukti pembayaran maksimal 500 KB!" });
+            }
+
+            if (existing.payment_proof_url) {
+                await supabase.storage.from("payment").remove([existing.payment_proof_url]);
+            }
+
+            const originalName = file.originalname || "image.png";
+            const fileExt = originalName.split(".").pop();
+            const uniqueName = `payment_proof_${Date.now()}.${fileExt}`;
+            const filePath = `${userId}/${uniqueName}`;
+
+            const { data: upload, error: uploadErr } = await supabase.storage
+                .from("payment")
+                .upload(filePath, file.buffer, {
+                    contentType: file.mimetype,
+                    upsert: true,
+                });
+
+            if (uploadErr) return res.status(500).json({ error: uploadErr.message });
+
+            paymentProofPath = upload.path;
+        }
+
+        const updatePayload = {
+            team_name,
+            university,
+            member_1,
+            member_2: currentCompType === "SEM" ? null : member_2,
+            member_3: currentCompType === "SEM" ? null : member_3,
+            member_4: (currentCompType === "SEM" || currentCompType === "BPC") ? null : member_4,
+            member_5: (currentCompType === "SEM" || currentCompType === "BPC") ? null : member_5,
+            payment_proof_url: paymentProofPath,
+        };
+
+        const { data, error: dbError } = await supabase
+            .from("registrations")
+            .update(updatePayload)
+            .eq("user_id", userId)
+            .select();
+
+        if (dbError) return res.status(400).json({ error: dbError.message });
+
+        res.json({ success: true, data });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

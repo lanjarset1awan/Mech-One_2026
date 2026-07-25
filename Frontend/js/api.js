@@ -41,6 +41,17 @@ async function registerCompetition(formData, token) {
     return res.json();
 }
 
+async function updateRegistrationCompetition(formData, token) {
+    const res = await fetch(`${BASE_URL}/competition/update`, {
+        method: "PUT",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+    });
+    return res.json();
+}
+
 async function getRegistrationStatus(token) {
     const res = await fetch(`${BASE_URL}/competition/status`, {
         method: "GET",
