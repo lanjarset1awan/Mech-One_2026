@@ -119,6 +119,32 @@
                     document.getElementById("submit-btn").innerText = "Update Proposal";
                     document.getElementById("proposal-title").value = res.proposal_title || "";
                     document.getElementById("dropzone-text").innerText = "Replace proposal file";
+
+                    // Display preview card for existing proposal
+                    const fileUrl = res.registrations;
+                    const cleanFilename = fileUrl.split('?')[0].split('/').pop();
+                    const ext = cleanFilename.split('.').pop().toLowerCase();
+
+                    document.getElementById("preview-filename").innerText = cleanFilename;
+                    document.getElementById("preview-filesize").innerText = "Uploaded Proposal File";
+
+                    const iconElem = document.getElementById("preview-file-icon");
+                    const iframeBox = document.getElementById("iframe-preview-box");
+
+                    if (ext === 'pdf') {
+                        iconElem.className = "fas fa-file-pdf text-2xl text-[#00a8e8]";
+                        document.getElementById("pdf-preview-iframe").src = fileUrl;
+                        iframeBox.classList.remove("hidden");
+                    } else if (['zip', 'rar', '7z'].includes(ext)) {
+                        iconElem.className = "fas fa-file-archive text-2xl text-yellow-400";
+                        iframeBox.classList.add("hidden");
+                    } else {
+                        iconElem.className = "fas fa-file-alt text-2xl text-gray-400";
+                        iframeBox.classList.add("hidden");
+                    }
+
+                    document.getElementById("dropzone").classList.add("hidden");
+                    document.getElementById("pdf-preview-container").classList.remove("hidden");
                 }
             } catch (err) {
                 console.error(err);
@@ -205,7 +231,7 @@
                 return;
             }
 
-            if (!selectedFile) {
+            if (!selectedFile && !isUpdate) {
                 await showPopup("Silakan pilih berkas proposal terlebih dahulu.");
                 return;
             }
@@ -216,7 +242,9 @@
             btn.disabled = true;
 
             const formData = new FormData();
-            formData.append("file", selectedFile);
+            if (selectedFile) {
+                formData.append("file", selectedFile);
+            }
             formData.append("proposal_title", title);
 
             try {

@@ -130,11 +130,19 @@ export const checkRegistrationStatus = async (req, res) => {
             paymentProofFullUrl = publicUrlData ? publicUrlData.publicUrl : paymentProofFullUrl;
         }
 
+        let proposalFullUrl = data.registrations;
+        if (proposalFullUrl && !proposalFullUrl.startsWith("http")) {
+            const { data: publicUrlData } = supabase.storage
+                .from("submition")
+                .getPublicUrl(proposalFullUrl);
+            proposalFullUrl = publicUrlData ? publicUrlData.publicUrl : proposalFullUrl;
+        }
+
         res.json({ 
             registered: true, 
             status: data.status, 
             type: data.competition_type,
-            registrations: data.registrations,
+            registrations: proposalFullUrl,
             proposal_title: data.proposal_title,
             team_name: data.team_name,
             university: data.university,
@@ -253,7 +261,7 @@ export const uploadProposal = async (req, res) => {
         // Check if registration exists
         const { data: reg, error: regError } = await supabase
             .from("registrations")
-            .select("id, competition_type")
+            .select("id, competition_type, registrations")
             .eq("user_id", userId)
             .single();
 
@@ -269,45 +277,48 @@ export const uploadProposal = async (req, res) => {
             return res.status(400).json({ error: "Proposal title is required." });
         }
 
-        if (!file) {
-            return res.status(400).json({ error: "No file uploaded." });
+        let proposalPath = reg.registrations;
+
+        if (file) {
+            const originalName = file.originalname || "proposal.pdf";
+            const fileExt = originalName.split(".").pop().toLowerCase();
+            const allowedExts = ["pdf", "zip", "rar", "7z"];
+
+            if (!allowedExts.includes(fileExt)) {
+                return res.status(400).json({ error: "Format berkas tidak didukung! Format yang diperbolehkan: PDF, ZIP, RAR." });
+            }
+
+            if (file.size > 5 * 1024 * 1024) { // 5 MB
+                return res.status(400).json({ error: "Ukuran file proposal maksimal 5 MB." });
+            }
+
+            const uniqueName = `proposal_${Date.now()}.${fileExt}`;
+            const filePath = `${userId}/${uniqueName}`;
+
+            const { data: upload, error: uploadError } = await supabase.storage
+                .from("submition")
+                .upload(filePath, file.buffer, {
+                    contentType: file.mimetype,
+                    upsert: true,
+                });
+
+            if (uploadError) return res.status(500).json({ error: uploadError.message });
+            proposalPath = upload.path;
+        } else if (!proposalPath) {
+            return res.status(400).json({ error: "Silakan pilih berkas proposal terlebih dahulu." });
         }
-
-        const originalName = file.originalname || "proposal.pdf";
-        const fileExt = originalName.split(".").pop().toLowerCase();
-        const allowedExts = ["pdf", "zip", "rar", "7z"];
-
-        if (!allowedExts.includes(fileExt)) {
-            return res.status(400).json({ error: "Format berkas tidak didukung! Format yang diperbolehkan: PDF, ZIP, RAR." });
-        }
-
-        if (file.size > 5 * 1024 * 1024) { // 5 MB
-            return res.status(400).json({ error: "Ukuran file proposal maksimal 5 MB." });
-        }
-
-        const uniqueName = `proposal_${Date.now()}.${fileExt}`;
-        const filePath = `${userId}/${uniqueName}`;
-
-        const { data: upload, error: uploadError } = await supabase.storage
-            .from("submition")
-            .upload(filePath, file.buffer, {
-                contentType: file.mimetype,
-                upsert: true,
-            });
-
-        if (uploadError) return res.status(500).json({ error: uploadError.message });
 
         const { error: dbError } = await supabase
             .from("registrations")
             .update({ 
-                registrations: upload.path,
+                registrations: proposalPath,
                 proposal_title: proposal_title
             })
             .eq("user_id", userId);
 
         if (dbError) return res.status(400).json({ error: dbError.message });
 
-        res.json({ success: true, path: upload.path, proposal_title });
+        res.json({ success: true, path: proposalPath, proposal_title });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
