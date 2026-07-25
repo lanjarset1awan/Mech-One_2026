@@ -207,7 +207,13 @@ export const updateRegistration = async (req, res) => {
             }
 
             if (existing.payment_proof_url) {
-                await supabase.storage.from("payment").remove([existing.payment_proof_url]);
+                let oldPath = existing.payment_proof_url;
+                if (oldPath.includes("/public/payment/")) {
+                    oldPath = oldPath.split("/public/payment/")[1];
+                }
+                if (!oldPath.startsWith("http")) {
+                    await supabase.storage.from("payment").remove([oldPath]);
+                }
             }
 
             const originalName = file.originalname || "image.png";
@@ -218,7 +224,7 @@ export const updateRegistration = async (req, res) => {
             const { data: upload, error: uploadErr } = await supabase.storage
                 .from("payment")
                 .upload(filePath, file.buffer, {
-                    contentType: file.mimetype,
+                    contentType: file.mimetype || "image/png",
                     upsert: true,
                 });
 
@@ -292,13 +298,24 @@ export const uploadProposal = async (req, res) => {
                 return res.status(400).json({ error: "Proposal file size must not exceed 5 MB." });
             }
 
+            // Remove old proposal file if replacing with a new file
+            if (reg.registrations) {
+                let oldPath = reg.registrations;
+                if (oldPath.includes("/public/submition/")) {
+                    oldPath = oldPath.split("/public/submition/")[1];
+                }
+                if (!oldPath.startsWith("http")) {
+                    await supabase.storage.from("submition").remove([oldPath]);
+                }
+            }
+
             const uniqueName = `proposal_${Date.now()}.${fileExt}`;
             const filePath = `${userId}/${uniqueName}`;
 
             const { data: upload, error: uploadError } = await supabase.storage
                 .from("submition")
                 .upload(filePath, file.buffer, {
-                    contentType: file.mimetype,
+                    contentType: file.mimetype || "application/octet-stream",
                     upsert: true,
                 });
 

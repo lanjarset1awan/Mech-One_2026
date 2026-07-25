@@ -89,7 +89,7 @@ export const uploadProfileDocs = async (req, res) => {
             }
             
             const dbColumn = file.fieldname;
-            const fileExt = file.mimetype.split('/')[1] || 'jpg';
+            const fileExt = file.originalname ? file.originalname.split('.').pop().toLowerCase() : (file.mimetype.split('/')[1] || 'jpg');
             const publicUrl = await uploadFile(file, dbColumn, fileExt);
             
             result[dbColumn] = publicUrl;

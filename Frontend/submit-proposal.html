@@ -95,6 +95,7 @@
 
         let selectedFile = null;
         let isUpdate = false;
+        let isExistingFileRemoved = false;
 
         async function initPage() {
             try {
@@ -204,6 +205,9 @@
         function removeProposalFile(event) {
             if (event) event.preventDefault();
             selectedFile = null;
+            if (isUpdate) {
+                isExistingFileRemoved = true;
+            }
             document.getElementById("proposal-file").value = "";
             
             const iframe = document.getElementById("pdf-preview-iframe");
@@ -217,7 +221,7 @@
             document.getElementById("iframe-preview-box").classList.add("hidden");
             
             if (isUpdate) {
-                document.getElementById("dropzone-text").innerText = "Replace proposal file";
+                document.getElementById("dropzone-text").innerText = "Select new proposal file";
             } else {
                 document.getElementById("dropzone-text").innerText = "Click to select PDF, ZIP, or RAR file";
             }
@@ -231,7 +235,7 @@
                 return;
             }
 
-            if (!selectedFile && !isUpdate) {
+            if (!selectedFile && (!isUpdate || isExistingFileRemoved)) {
                 await showPopup("Please select a proposal file first.");
                 return;
             }
