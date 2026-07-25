@@ -230,7 +230,7 @@
                 const file = input.files[0];
                 const MAX_SIZE = 500 * 1024;
                 if (file.size > MAX_SIZE) {
-                    await showPopup("Ukuran file maksimal 500 KB!");
+                    await showPopup("Maximum file size is 500 KB!");
                     input.value = "";
                     display.innerText = isUpdateMode ? "Payment proof uploaded (Click to replace)" : "Click to upload payment proof";
                     display.classList.remove("text-white");
@@ -240,7 +240,7 @@
                     return;
                 }
                 if (!file.type.startsWith("image/")) {
-                    await showPopup("Format file harus gambar (JPG, PNG)!");
+                    await showPopup("File format must be an image (JPG, PNG)!");
                     input.value = "";
                     display.innerText = isUpdateMode ? "Payment proof uploaded (Click to replace)" : "Click to upload payment proof";
                     display.classList.remove("text-white");
@@ -341,7 +341,7 @@
                     await showPopup((isUpdateMode ? "Update failed: " : "Registration failed: ") + res.error);
                 } else {
                     if (isUpdateMode) {
-                        await showPopup("Data pendaftaran berhasil diperbarui!", false);
+                        await showPopup("Registration data updated successfully!", false);
                         window.location.href = "index.html";
                     } else {
                         if (currentCompType === 'MDC' || currentCompType === 'BPC') {
@@ -354,7 +354,7 @@
                     }
                 }
             } catch (err) {
-                await showPopup("Terjadi kesalahan sistem saat memproses registrasi: " + err.message);
+                await showPopup("System error occurred while processing registration: " + err.message);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;

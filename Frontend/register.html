@@ -99,7 +99,7 @@
                 const password = document.getElementById("password").value;
 
                 if (!full_name || !email || !password) {
-                    await showPopup("Harap isi semua field.");
+                    await showPopup("Please fill in all fields.");
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                     return;
@@ -108,15 +108,15 @@
                 const res = await register({ full_name, email, password });
                 
                 if(res.error) {
-                     await showPopup("Registrasi gagal: " + res.error);
+                     await showPopup("Registration failed: " + res.error);
                      btn.innerHTML = originalText;
                      btn.disabled = false;
                 } else {
-                     await showPopup("Register sukses, silakan login", false);
+                     await showPopup("Registration successful, please log in.", false);
                      window.location.href = "login.html";
                 }
             } catch (error) {
-                await showPopup("Terjadi kesalahan sistem.");
+                await showPopup("System error occurred.");
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }

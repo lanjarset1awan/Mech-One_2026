@@ -166,7 +166,7 @@
 
             // MDC or BPC require login and registration checks
             if (requestedType !== 'MDC' && requestedType !== 'BPC') {
-                await showPopup("⚠️ Akses Ditolak!\n\nTipe guidebook tidak valid.");
+                await showPopup("⚠️ Access Denied!\n\nInvalid guidebook type.");
                 window.location.href = "index.html";
                 return;
             }
@@ -182,7 +182,7 @@
                 const res = await getRegistrationStatus(token);
                 if (res && res.registered) {
                     if (res.type !== requestedType) {
-                        await showPopup(`⚠️ Akses Ditolak!\n\nAnda tidak terdaftar untuk kompetisi ${requestedType}.`);
+                        await showPopup(`⚠️ Access Denied!\n\nYou are not registered for the ${requestedType} competition.`);
                         window.location.href = "index.html";
                         return;
                     }
@@ -206,12 +206,12 @@
                         mainContent.classList.remove("opacity-0");
                     }
                 } else {
-                    await showPopup("⚠️ Akses Ditolak!\n\nAnda harus menyelesaikan pendaftaran kompetisi terlebih dahulu untuk mengakses guidebook.");
+                    await showPopup("⚠️ Access Denied!\n\nYou must complete competition registration first to access the guidebook.");
                     window.location.href = "index.html";
                 }
             } catch (e) {
                 console.error(e);
-                await showPopup("Gagal memverifikasi status pendaftaran.");
+                await showPopup("Failed to verify registration status.");
                 window.location.href = "index.html";
             }
         }

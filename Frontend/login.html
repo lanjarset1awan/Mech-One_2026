@@ -96,15 +96,15 @@
 
                 if (res.token) {
                     localStorage.setItem("token", res.token);
-                    await showPopup("Login sukses", false);
+                    await showPopup("Login successful!", false);
                     window.location.href = "index.html";
                 } else {
-                    await showPopup(res.message || "Login gagal");
+                    await showPopup(res.message || "Login failed");
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                 }
             } catch (error) {
-                await showPopup("Terjadi kesalahan sistem.");
+                await showPopup("System error occurred.");
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }

@@ -56,11 +56,11 @@ export const registerCompetition = async (req, res) => {
             }
             
             if (!file.mimetype.startsWith("image/")) {
-                return res.status(400).json({ error: "Format file harus gambar (JPG, PNG)!" });
+                return res.status(400).json({ error: "Payment proof must be an image file (JPG, PNG)!" });
             }
             
             if (file.size > 500 * 1024) {
-                return res.status(400).json({ error: "Ukuran file bukti pembayaran maksimal 500 KB!" });
+                return res.status(400).json({ error: "Payment proof file size must not exceed 500 KB!" });
             }
 
             const originalName = file.originalname || "image.png";
@@ -180,18 +180,18 @@ export const updateRegistration = async (req, res) => {
             .single();
 
         if (fetchErr || !existing) {
-            return res.status(400).json({ error: "Anda belum terdaftar di kompetisi apa pun." });
+            return res.status(400).json({ error: "You are not registered for any competition yet." });
         }
 
         const currentCompType = existing.competition_type || competition_type;
 
         if (currentCompType === "SEM") {
             if (!team_name || !university || !member_1) {
-                return res.status(400).json({ error: "Nama Lengkap, Perguruan Tinggi, dan Nama Peserta wajib diisi." });
+                return res.status(400).json({ error: "Full Name, University, and Participant Name are required." });
             }
         } else {
             if (!team_name || !university || !member_1 || !member_2 || !member_3) {
-                return res.status(400).json({ error: "Nama Tim, Perguruan Tinggi, Ketua, Anggota 2, dan Anggota 3 wajib diisi." });
+                return res.status(400).json({ error: "Team Name, University, Leader, Member 2, and Member 3 are required." });
             }
         }
 
@@ -200,10 +200,10 @@ export const updateRegistration = async (req, res) => {
 
         if (file) {
             if (!file.mimetype.startsWith("image/")) {
-                return res.status(400).json({ error: "Format file bukti pembayaran harus gambar (JPG, PNG)!" });
+                return res.status(400).json({ error: "Payment proof must be an image file (JPG, PNG)!" });
             }
             if (file.size > 500 * 1024) {
-                return res.status(400).json({ error: "Ukuran file bukti pembayaran maksimal 500 KB!" });
+                return res.status(400).json({ error: "Payment proof file size must not exceed 500 KB!" });
             }
 
             if (existing.payment_proof_url) {
@@ -285,11 +285,11 @@ export const uploadProposal = async (req, res) => {
             const allowedExts = ["pdf", "zip", "rar", "7z"];
 
             if (!allowedExts.includes(fileExt)) {
-                return res.status(400).json({ error: "Format berkas tidak didukung! Format yang diperbolehkan: PDF, ZIP, RAR." });
+                return res.status(400).json({ error: "Unsupported file format! Allowed formats: PDF, ZIP, RAR." });
             }
 
             if (file.size > 5 * 1024 * 1024) { // 5 MB
-                return res.status(400).json({ error: "Ukuran file proposal maksimal 5 MB." });
+                return res.status(400).json({ error: "Proposal file size must not exceed 5 MB." });
             }
 
             const uniqueName = `proposal_${Date.now()}.${fileExt}`;
@@ -302,10 +302,10 @@ export const uploadProposal = async (req, res) => {
                     upsert: true,
                 });
 
-            if (uploadError) return res.status(500).json({ error: uploadError.message });
+            if (uploadError) return res.status(500).json({ error: "Storage error: " + uploadError.message });
             proposalPath = upload.path;
         } else if (!proposalPath) {
-            return res.status(400).json({ error: "Silakan pilih berkas proposal terlebih dahulu." });
+            return res.status(400).json({ error: "Please select a proposal file first." });
         }
 
         const { error: dbError } = await supabase
@@ -316,7 +316,7 @@ export const uploadProposal = async (req, res) => {
             })
             .eq("user_id", userId);
 
-        if (dbError) return res.status(400).json({ error: dbError.message });
+        if (dbError) return res.status(400).json({ error: "Database error: " + dbError.message });
 
         res.json({ success: true, path: proposalPath, proposal_title });
     } catch (err) {

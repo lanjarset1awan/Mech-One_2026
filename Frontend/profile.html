@@ -234,7 +234,7 @@
                 const file = input.files[0];
 
                 if (file.size > 300 * 1024) {
-                    await showPopup("Ukuran file maksimal 300 KB!");
+                    await showPopup("Maximum file size is 300 KB!");
                     input.value = "";
                     return;
                 }

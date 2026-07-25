@@ -100,13 +100,13 @@
             try {
                 const res = await getRegistrationStatus(token);
                 if (!res.registered) {
-                    await showPopup("⚠️ Akses Ditolak!\n\nAnda belum terdaftar di kompetisi apa pun.");
+                    await showPopup("⚠️ Access Denied!\n\nYou are not registered for any competition yet.");
                     window.location.href = "index.html";
                     return;
                 }
 
                 if (res.type === 'SEM') {
-                    await showPopup("⚠️ Akses Ditolak!\n\nPeserta Seminar tidak memerlukan proposal.");
+                    await showPopup("⚠️ Access Denied!\n\nSeminar participants do not need to submit a proposal.");
                     window.location.href = "index.html";
                     return;
                 }
@@ -148,7 +148,7 @@
                 }
             } catch (err) {
                 console.error(err);
-                await showPopup("Gagal memuat status pendaftaran.");
+                await showPopup("Failed to load registration status.");
                 window.location.href = "index.html";
             }
         }
@@ -161,13 +161,13 @@
             const allowedExts = ['pdf', 'zip', 'rar', '7z'];
 
             if (!allowedExts.includes(ext)) {
-                showPopup("Format berkas tidak didukung! Format yang diperbolehkan: PDF, ZIP, RAR.");
+                showPopup("Unsupported file format! Allowed formats: PDF, ZIP, RAR.");
                 event.target.value = "";
                 return;
             }
 
             if (file.size > 5 * 1024 * 1024) { // 5 MB
-                showPopup("Ukuran file maksimal 5 MB!");
+                showPopup("Maximum file size is 5 MB!");
                 event.target.value = "";
                 return;
             }
@@ -227,12 +227,12 @@
             event.preventDefault();
             const title = document.getElementById("proposal-title").value.trim();
             if (!title) {
-                await showPopup("Judul proposal wajib diisi.");
+                await showPopup("Proposal title is required.");
                 return;
             }
 
             if (!selectedFile && !isUpdate) {
-                await showPopup("Silakan pilih berkas proposal terlebih dahulu.");
+                await showPopup("Please select a proposal file first.");
                 return;
             }
 
@@ -250,13 +250,13 @@
             try {
                 const res = await uploadProposal(formData, token);
                 if (res.success) {
-                    await showPopup("Proposal berhasil dikirim!", false);
+                    await showPopup("Proposal submitted successfully!", false);
                     window.location.href = "index.html";
                 } else {
-                    await showPopup("Pengunggahan gagal: " + (res.error || "Terjadi kesalahan"));
+                    await showPopup("Upload failed: " + (res.error || "An error occurred"));
                 }
             } catch (err) {
-                await showPopup("Terjadi kesalahan sistem: " + err.message);
+                await showPopup("System error occurred: " + err.message);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
