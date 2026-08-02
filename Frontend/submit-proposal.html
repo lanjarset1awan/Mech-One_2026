@@ -112,6 +112,11 @@
                     return;
                 }
 
+                if (res.type === 'MDC') {
+                    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSdO-UYv9p-xZYaOHTmsXQolH_y1FtgEWxgZHwH3yyhorzoV6A/viewform?usp=sharing&ouid=109382620225367725268";
+                    return;
+                }
+
                 document.getElementById("comp-name").innerText = res.type;
                 
                 if (res.registrations) {
